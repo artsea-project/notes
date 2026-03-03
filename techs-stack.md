@@ -29,8 +29,18 @@ It also helps us with migrations.
 
 ## Authentication
 
-No decision yet.
+BetterAuth
+<https://github.com/better-auth/better-auth>
+Free, works with SupaBase and drizzle, allows for Google Auth which is the
+preferred option.
 
 ## Testing
 
-No decision yet.
+Look at jest with next and RTS.
+Jest: <https://nextjs.org/docs/app/guides/testing/jest>
+RTS: <https://testing-library.com/docs/react-testing-library/intro/>
+
+Playwright for in browser testing
+
+Look at MSW for mocking APIs
+<https://mswjs.io/docs/>
