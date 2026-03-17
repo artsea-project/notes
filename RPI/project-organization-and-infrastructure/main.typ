@@ -61,7 +61,7 @@
   [Funkcja],
   [Priorytet],
 
-  [Artystę],
+  [Artysta],
   [Rejestracja konta],
   [MUST],
 
