@@ -98,6 +98,10 @@
     },
   )
 
+  show link: set text(
+    fill: rgb("#0645AD"),
+  )
+
   set columns(gutter: 0.2in)
 
   set text(
@@ -311,6 +315,8 @@
 //   ]
 // }
 
+#let formatted_table_sep = table.hline(stroke: black + 0.4pt)
+
 #let formatted_table(
   caption: none,
   columnsCount: none,
@@ -326,10 +332,10 @@
       zero.ztable(
         stroke: (x, y) => { if y == 0 { (bottom: black + 0.7pt) } else { none } },
         columns: (columnsCount),
-        align: bottom + center,
+        align: horizon + center,
         ..args,
         table.hline(),
-        cells,
+        ..cells,
         table.hline(),
       ),
     )
@@ -340,17 +346,12 @@
 }
 
 // #formatted_table(columnsCount: 4,
-//     (        [xsdd],[*y*],[*z*],
-//     [First], [1], [0.3], [14],
+//     (
+//     []        [xsdd],[*y*],[*z*],
+//     [First],  [1], [0.3], [14],
 //     [Second], [2], [0.4], [023],
-//     [Third], [3], [0.8]))
-
-// #formatted_table(columnsCount: 3,
-//     (table_units(x:"123", y:"345"),   [xsdd],[*y*],[*z*],
-//     [First], [1], [0.3], [14],
-//     [Second], [2], [0.4], [023],
-//     [Third], [3], [0.8])
-//   )
+//     [Third],  [3], [0.8])
+//     )
 
 // #formatted_table(columnsCount: 3,
 //   (
@@ -359,6 +360,26 @@
 //     [a],[b],[c],
 //     [a],[b],[c],
 //     [a],[b],[c],
+//   ))
+
+
+// #formatted_table(columnsCount: 3,
+//   (
+//     [sadasdasdasd],[b],[c],
+//     [9],[b],[c],
+//     [a],[b],[c],
+//     formatted_table_sep,
+//     [a],[b],[c],
+//     formatted_table_sep,
+//     [a],[b],[c],
+//   ))
+
+// Note: Not working currently, ignore
+// #formatted_table(columnsCount: 3,
+//     (table_units(x:"123", y:"345"),   [xsdd],[*y*],[*z*],
+//     [First], [1], [0.3], [14],
+//     [Second], [2], [0.4], [023],
+//     [Third], [3], [0.8])
 //   )
 
 
