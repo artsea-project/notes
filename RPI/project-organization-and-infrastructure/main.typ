@@ -57,7 +57,7 @@
 
 
 == Wymagania funkcjonalne
-
+// TO DO: Reconsider priorities
 #formatted_table(
   caption: [Wymagania funkcjonalne systemu],
   columnsCount: 3,
@@ -94,6 +94,7 @@
 )
 
 == Wymagania jakościowe
+// TO DO: Reconsider priorities
 #{
   set text(hyphenate: false)
   formatted_table(
