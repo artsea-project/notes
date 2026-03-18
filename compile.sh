@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-OUT=out
+OUT='docs'
 FILE_NAME='main.typ'
 
 mapfile -t FILES < <(find . -name "$FILE_NAME")
