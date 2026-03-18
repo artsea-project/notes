@@ -262,7 +262,11 @@
   // references
   show bibliography: set text(9pt)
   //set bibliography(title: [References], style: "jacow.csl")
-  show link: it => text(font: "DejaVu Sans Mono", size: 7.2pt, it)
+  show link: it => text(
+    // font: "DejaVu Sans Mono",
+    size: 7.2pt,
+    it,
+  )
 
 
   let eq_numbering(num) = {
