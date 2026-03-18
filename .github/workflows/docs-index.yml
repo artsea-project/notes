@@ -1,0 +1,38 @@
+name: Build docs index
+
+on:
+  push:
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Typst
+        run: |
+          set -euo pipefail
+          curl -fsSL \
+            https://github.com/typst/typst/releases/latest/download/typst-x86_64-unknown-linux-musl.tar.xz \
+            -o /tmp/typst.tar.xz
+          tar -xJf /tmp/typst.tar.xz -C /tmp
+          sudo install /tmp/typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
+          typst --version
+
+      - name: Compile Typst docs
+        run: |
+          chmod +x ./compile.sh
+          ./compile.sh
+
+      - name: Build docs index
+        run: |
+          chmod +x ./build-index.sh
+          ./build-index.sh
+
+      - name: Commit updated docs
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update docs index"
