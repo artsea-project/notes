@@ -286,7 +286,7 @@ Wszystkie zasoby projektu znajdują się w ramach jednej organizacji na platform
     [GitHub (repo: #webapp)],
     [Przechowywanie i wersjonowanie kodu źródłowego],
     [Dokumentacja i notatki],
-    [GitHub (repo: notes, thesis)],
+    [GitHub (repo: #notes, #thesis)],
     [Przechowywanie i wersjonowanie notatek oraz treści pracy],
     [Modelowanie],
     [Figma],
