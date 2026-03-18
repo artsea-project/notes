@@ -67,6 +67,7 @@
     [Użytkownik],
     [Funkcja],
     [Priorytet],
+      // TO DO: Add more functions for artists (as decribed in project description), e.g. adding new categoires, modyfing existing photos, decrpitions etc.
     table.cell(rowspan: 3)[Artysta],
     [Rejestracja konta],
     [MUST],
@@ -83,11 +84,12 @@
     [Filtrowanie prac po kategoriach],
     [COULD],
     formatted_table_sep,
-    table.cell(rowspan: 2)[Administrator],
-    [Panel zarządzania użytkownikami],
-    [MUST],
-    [Moderacja treści],
-    [MUST],
+    // To discuss - advised to remove administrator
+    // table.cell(rowspan: 2)[Administrator],
+    // [Panel zarządzania użytkownikami],
+    // [MUST],
+    // [Moderacja treści],
+    // [MUST],
   ),
 )
 
