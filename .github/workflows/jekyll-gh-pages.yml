@@ -8,6 +8,13 @@ on:
     paths:
       - "docs/**"
 
+  # Also run after docs-index workflow commits docs/ with GITHUB_TOKEN
+  workflow_run:
+    workflows: ["Build docs index"]
+    branches: ["main"]
+    types:
+      - completed
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -26,6 +33,7 @@ concurrency:
 jobs:
   # Build job
   build:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
