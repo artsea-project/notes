@@ -67,7 +67,7 @@
     [Użytkownik],
     [Funkcja],
     [Priorytet],
-      // TO DO: Add more functions for artists (as decribed in project description), e.g. adding new categoires, modyfing existing photos, decrpitions etc.
+    // TO DO: Add more functions for artists (as decribed in project description), e.g. adding new categoires, modyfing existing photos, decrpitions etc.
     table.cell(rowspan: 8)[Artysta],
     [Rejestracja konta],
     [MUST],
@@ -228,7 +228,6 @@
 
 System jest rozwijany przez zespół pracujący w trybie hybrydowym (częściowo podczas spotkań, częściowo zdalnie).
 
-// TODO: To raczej jako lista, nie tabela bo Umiejętności to będzie dłuższy paragraf
 #formatted_table(
   caption: [Zespół],
   columnsCount: 4,
