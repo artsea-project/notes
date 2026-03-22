@@ -246,9 +246,9 @@ System jest rozwijany przez zespół pracujący w trybie hybrydowym (częściowo
     [],
     [#link("mailto:benjamin.jurewicz204@gmail.com", "benjamin.jurewicz204@gmail.com")],
     [Lidia Zawrzykraj],
-    [],
-    [],
-    [],
+    [Figma, Prototypowanie, IA, RWD],
+    [UX/UI],
+    [#link("mailto:lidia.zawrzykraj@gmail.com", "lidia.zawrzykraj@gmail.com")],
   ),
 )
 
