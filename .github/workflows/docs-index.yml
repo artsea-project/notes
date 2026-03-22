@@ -26,13 +26,13 @@ jobs:
 
       - name: Compile Typst docs
         run: |
-          chmod +x ./compile.sh
-          ./compile.sh
+          chmod +x ./scripts/compile.sh
+          ./scripts/compile.sh
 
       - name: Build docs index
         run: |
-          chmod +x ./build-index.sh
-          ./build-index.sh
+          chmod +x ./scripts/build-index.sh
+          ./scripts/build-index.sh
 
       - name: Commit updated docs
         uses: stefanzweifel/git-auto-commit-action@v5
