@@ -6,7 +6,7 @@
   title: [ArtSea],
   subtitle: [organizacja i infrastruktura projektu],
   authors: (
-    (name: "Benjamin Jurewicz", studentID: "s198326"),
+    (name: "Benjamin Jurewicz", studentID: "198326"),
     (name: "Marta Kociszewska", studentID: "198143"),
     (name: "Lidia Zawrzykraj", studentID: "198257"),
   ),
