@@ -168,15 +168,11 @@
 
 == Główne etapy projektu
 
-1. Analiza i specyfikacja wymagań.
-
-2. Projektowanie UI/UX i architektury systemu.
-
-3. Implementacja modułu zarządzania portfolio (MVP).
-
-4. Testy wydajnościowe i bezpieczeństwa.
-
-5. Wdrożenie.
++ Analiza i specyfikacja wymagań.
++ Projektowanie UI/UX i architektury systemu.
++ Implementacja modułu zarządzania portfolio (MVP).
++ Testy wydajnościowe i bezpieczeństwa.
++ Wdrożenie.
 
 = Interesariusze i użytkownicy
 

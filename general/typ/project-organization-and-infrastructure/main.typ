@@ -122,18 +122,12 @@
 
 == Główne etapy projektu
 
-1. Analiza i specyfikacja wymagań.
-
-2. Projektowanie UI/UX i architektury systemu.
-
-3. Implementacja projektu (MVP).
-
-4. Ewaluacja działania na różnych platformach.
-
-5. Wdrożenie.
-
-6. Przygotowanie tutoriali dla artystów.
-
++ Analiza i specyfikacja wymagań.
++ Projektowanie UI/UX i architektury systemu.
++ Implementacja projektu (MVP).
++ Ewaluacja działania na różnych platformach.
++ Wdrożenie.
++ Przygotowanie tutoriali dla artystów.
 
 = Interesariusze i użytkownicy
 
