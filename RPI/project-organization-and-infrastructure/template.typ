@@ -112,7 +112,7 @@
   set par(
     first-line-indent: 1em,
     justify: true,
-    spacing: 1em,
+    spacing: 1.2em,
     leading: 0.5em,
   )
 
@@ -189,29 +189,27 @@
     set text(size: 12pt, weight: "bold", style: "normal", hyphenate: false)
     counter(math.equation).update(0)
     block(
-      below: 2pt,
+      below: 1em,
       allcaps(counter(heading).display() + ". " + it.body),
     )
-    h(1em)
   }
 
   // Subsection Headings
   show heading.where(level: 2): it => {
     set align(left)
     set text(size: 12pt, weight: "regular", style: "italic", hyphenate: false)
-    block(
-      below: 2pt,
-      wordcaps(it.body),
-    )
-    // h(1em)
-    h(10pt)
+    set par(first-line-indent: 0pt)
+    wordcaps(it.body)
+    v(0pt)
   }
 
   // Third-Level Headings
   show heading.where(level: 3): it => {
-    v(6pt)
-    text(size: 10pt, weight: "bold", style: "normal", wordcaps(it.body))
-    h(0.5em)
+    v(0.5em)
+    set text(size: 10pt, weight: "bold", style: "normal")
+    set par(first-line-indent: 0pt)
+    wordcaps(it.body)
+    v(0pt)
   }
 
   // lists
