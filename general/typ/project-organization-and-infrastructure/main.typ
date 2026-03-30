@@ -83,7 +83,7 @@
     table.cell(rowspan: 3)[Odbiorcy],
     [Przeglądanie galerii zdjęć],
     [MUST],
-    [Możliwość kontaktu z artystą (np. formularz kontaktowy)], 
+    [Możliwość kontaktu z artystą (np. formularz kontaktowy)],
     [MUST],
     [Wybór języka interfejsu],
     [SHOULD],
@@ -100,20 +100,20 @@
 == Wymagania jakościowe
 
 === Wydajność:
-  - Czas ładowania całej strony przy łączu _LTE_ nie może przekraczać 2 sekund (np. generowanie miniatur pełnych zdjęć). (COULD)
+- Czas ładowania całej strony przy łączu _LTE_ nie może przekraczać 2 sekund (np. generowanie miniatur pełnych zdjęć). (COULD)
 === Niezawodność:
-  - System musi poprawnie obsłużyć proces zapisu wielu formatów plików graficznych. (MUST)
-  - System musi gwarantować, że żadne dane wprowadzone przez użytkownika nie zostaną stracone w przypadku utraty sesji. (COULD)
+- System musi poprawnie obsłużyć proces zapisu wielu formatów plików graficznych. (MUST)
+- System musi gwarantować, że żadne dane wprowadzone przez użytkownika nie zostaną stracone w przypadku utraty sesji. (COULD)
 // === Dostępność
 //   - Usługa musi być dostępna dla użytkowników (uptime) na poziomie 99,5% w skali miesiąca, z wyłączeniem planowanych okien serwisowych. (MUST) - to discuss
 === Ochrona
-  - Strona musi być zabezpieczona aktywnym certyfikatem SSL (protokół HTTPS). (MUST)
+- Strona musi być zabezpieczona aktywnym certyfikatem SSL (protokół HTTPS). (MUST)
 === Bezpieczeństwo
-  - Hasła użytkowników muszą być przechowywane w bazie danych w formie zahaszowanej przy użyciu obecnie bezpiecznego algorytmu. (MUST)
-=== Przenośność 
-  - System musi poprawnie wyświetlać portfolio na trzech najpopularniejszych przeglądarkach (Chrome, Safari, Firefox) oraz na systemach Android i iOS. (MUST)
+- Hasła użytkowników muszą być przechowywane w bazie danych w formie zahaszowanej przy użyciu obecnie bezpiecznego algorytmu. (MUST)
+=== Przenośność
+- System musi poprawnie wyświetlać portfolio na trzech najpopularniejszych przeglądarkach (Chrome, Safari, Firefox) oraz na systemach Android i iOS. (MUST)
 === Konfigurowalność
-  - Artysta musi mieć możliwość zmiany parametrów wizualnych strony (np. kolorystyka, font, układ siatki). (SHOULD)
+- Artysta musi mieć możliwość zmiany parametrów wizualnych strony (np. kolorystyka, font, układ siatki). (SHOULD)
 
 == Ograniczenia
 
