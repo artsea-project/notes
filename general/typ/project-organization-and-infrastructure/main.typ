@@ -57,7 +57,6 @@
 
 
 == Wymagania funkcjonalne
-// TO DO: Reconsider priorities
 #formatted_table(
   caption: [Wymagania funkcjonalne systemu],
   columnsCount: 3,
@@ -67,33 +66,26 @@
     [Użytkownik],
     [Funkcja],
     [Priorytet],
-    // TO DO: Add more functions for artists (as decribed in project description), e.g. adding new categoires, modyfing existing photos, decrpitions etc.
-    table.cell(rowspan: 8)[Artysta],
-    [Rejestracja konta],
+    table.cell(rowspan: 6)[Artysta],
+    [Rejestracja konta], // to disscuss
     [MUST],
-    [Wyrywanie grafik/zdjęć z opisami],
+    [Dodawanie/edytowanie/usuwanie grafik, zdjęć, opisów, kategorii prac],
     [MUST],
-    [Usunięcie grafik/zdjęć z portfolio],
+    [Dodanie/edytowianie informacji o sobie],
     [MUST],
-    [Edycja opisów prac],
-    [MUST],
-    [Edycja kategorii prac],
-    [MUST],
-    [Zamiana istniejących grafik/zdjęć],
-    [MUST],
-    [Stworzenie podstrony "O mnie"],
-    [MUST],
+    [Moliwość zmieniania layoutu strony głównej (_bento box_)],
+    [SHOULD],
+    [Możliwość dodawania gifów],
+    [SHOULD],
     [Integracja z mediami społecznościowymi],
     [COULD],
     formatted_table_sep,
-    table.cell(rowspan: 4)[Odbiorcy],
+    table.cell(rowspan: 3)[Odbiorcy],
     [Przeglądanie galerii zdjęć],
     [MUST],
-    [Formularz kontaktowy do artysty],
+    [Możliwość kontaktu z artystą (np. formularz kontaktowy)], 
     [MUST],
     [Wybór języka interfejsu],
-    [MUST],
-    [Filtrowanie prac po kategoriach],
     [SHOULD],
     formatted_table_sep,
     // To discuss - advised to remove administrator
@@ -107,73 +99,26 @@
 
 == Wymagania jakościowe
 
-=== wydajność
-- Czas ładowania strony głównej portfolio (First Contentful Paint) przy łączu 10 Mbps nie może przekraczać 2 sekund. SHOULD
-- Czas ładowania strony głównej portfolio (First Contentful Paint) przy łączu 10 Mbps nie może przekraczać 2 sekund. SHOULD
-
-=== niezawodność
-- System musi poprawnie obsłużyć proces zapisu (uploadu) plików graficznych w 99% przypadków przy stabilnym połączeniu internetowym. MUST
-- System musi poprawnie obsłużyć proces zapisu (uploadu) plików graficznych w 99% przypadków przy stabilnym połączeniu internetowym. MUST
-
-// TO DO: Reconsider priorities
-#{
-  set text(hyphenate: false)
-  formatted_table(
-    caption: [Wymagania niefunkcjonalne systemu],
-    columnsCount: 3,
-    ref: "tab:non-functional",
-    (
-      [Kategoria],
-      [Treść wymagania],
-      [Priorytet],
-      [wydajność],
-      [Czas ładowania strony głównej portfolio (First Contentful Paint) przy łączu 10 Mbps nie może przekraczać 2 sekund.],
-      [SHOULD],
-      formatted_table_sep,
-      [niezawodność],
-      [System musi poprawnie obsłużyć proces zapisu (uploadu) plików graficznych w 99% przypadków przy stabilnym połączeniu internetowym.],
-      [MUST],
-      formatted_table_sep,
-      [dostępność],
-      [Usługa musi być dostępna dla użytkowników (uptime) na poziomie 99,5% w skali miesiąca, z wyłączeniem planowanych okien serwisowych.],
-      [MUST],
-      formatted_table_sep,
-      [ochrona],
-      [Każde portfolio artysty musi być automatycznie zabezpieczone aktywnym certyfikatem SSL (protokół HTTPS).],
-      [MUST],
-      formatted_table_sep,
-      [bezpieczeństwo],
-      [Hasła użytkowników muszą być przechowywane w bazie danych w formie zahaszowanej przy użyciu obecnie bezpiecznego algorytmu.],
-      [MUST],
-      formatted_table_sep,
-      [przenośność],
-      [System musi poprawnie wyświetlać portfolio na trzech najpopularniejszych przeglądarkach (Chrome, Safari, Firefox) oraz na systemach Android i iOS.],
-      [MUST],
-      formatted_table_sep,
-      [elastyczność],
-      [System pozwala modyfikować strukturę danych portfolio (np. dodawanie nowych kategorii prac) bez konieczności wprowadzania zmian w kodzie źródłowym.],
-      [MUST],
-      formatted_table_sep,
-      [konfigurowalność],
-      [Artysta musi mieć możliwość zmiany co najmniej 5 parametrów wizualnych strony (np. kolor tła, font, układ siatki) z poziomu panelu administratora.],
-      [SHOULD],
-      formatted_table_sep,
-      [użyteczność],
-      [Wykonanie podstawowej czynności (dodanie nowej pracy do galerii) przez nowego użytkownika nie powinno zająć więcej niż 3 minuty bez instrukcji.],
-      [SHOULD],
-    ),
-  )
-}
+=== Wydajność:
+  - Czas ładowania całej strony przy łączu _LTE_ nie może przekraczać 2 sekund (np. generowanie miniatur pełnych zdjęć). (COULD)
+=== Niezawodność:
+  - System musi poprawnie obsłużyć proces zapisu wielu formatów plików graficznych. (MUST)
+  - System musi gwarantować, że żadne dane wprowadzone przez użytkownika nie zostaną stracone w przypadku utraty sesji. (COULD)
+// === Dostępność
+//   - Usługa musi być dostępna dla użytkowników (uptime) na poziomie 99,5% w skali miesiąca, z wyłączeniem planowanych okien serwisowych. (MUST) - to discuss
+=== Ochrona
+  - Strona musi być zabezpieczona aktywnym certyfikatem SSL (protokół HTTPS). (MUST)
+=== Bezpieczeństwo
+  - Hasła użytkowników muszą być przechowywane w bazie danych w formie zahaszowanej przy użyciu obecnie bezpiecznego algorytmu. (MUST)
+=== Przenośność 
+  - System musi poprawnie wyświetlać portfolio na trzech najpopularniejszych przeglądarkach (Chrome, Safari, Firefox) oraz na systemach Android i iOS. (MUST)
+=== Konfigurowalność
+  - Artysta musi mieć możliwość zmiany parametrów wizualnych strony (np. kolorystyka, font, układ siatki). (SHOULD)
 
 == Ograniczenia
 
 - Limit rozmiaru plików,
 - Zgodność z RODO,
-- Optymalizacja zdjęć pod wolne łącza
-
-== Termin
-
-30.01.2027
 
 == Główne etapy projektu
 
@@ -181,11 +126,14 @@
 
 2. Projektowanie UI/UX i architektury systemu.
 
-3. Implementacja modułu zarządzania portfolio (MVP).
+3. Implementacja projektu (MVP).
 
-4. Testy wydajnościowe i bezpieczeństwa.
+4. Ewaluacja działania na różnych platformach.
 
 5. Wdrożenie.
+
+6. Przygotowanie tutoriali dla artystów.
+
 
 = Interesariusze i użytkownicy
 
