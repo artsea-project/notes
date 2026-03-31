@@ -12,11 +12,11 @@ flowchart LR
         PU2([Kontakt z artystą / Formularz])
         PU3([Wybór języka interfejsu])
     end
-
-    Odbiorca --> PU1
-    Odbiorca --> PU2
-    Odbiorca --> PU3
-    PU2 --> SerwerEmail
+    
+    Odbiorca --- PU1
+    Odbiorca --- PU2
+    Odbiorca --- PU3
+    PU2 --- SerwerEmail
 ```
 
 ## Przypadki użycia dla Artysty
@@ -34,28 +34,28 @@ flowchart LR
         PU9([Dodawanie kategorii prac])
         PU10([Edytowanie kategorii prac])
         PU11([Dodawanie/edytyowanie informacji o sobie])
-        PU12([Zmienianie layoutu strony głównej])
+        PU12([Personalizacja strony])
     end
 
-    Artysta --> PU4
-    Artysta --> PU5
-    Artysta --> PU6
-    Artysta --> PU8
-    Artysta --> PU9
-    Artysta --> PU10
-    Artysta --> PU11
-    Artysta --> PU12
+    Artysta --- PU4
+    Artysta --- PU5
+    Artysta --- PU6
+    Artysta --- PU8
+    Artysta --- PU9
+    Artysta --- PU10
+    Artysta --- PU11
+    Artysta --- PU12
     PU5 --- | << includes >> | PU7
     PU6 --- | << includes >> | PU7
+    PU7 --- | << extends >> | PU9
 ```
 
 <!--
-Stary diagram (wszystkie przypadki użycia w jednym)
 ```mermaid
 flowchart LR
     %% Definicja aktora
-    Odbiorca((Odbiorca))
     Artysta((Artysta))
+    Odbiorca((Odbiorca))
     SerwerEmail(("Serwer E-mail"))
 
     %% Granice systemu ArtSea
@@ -71,7 +71,7 @@ flowchart LR
         PU9([Dodawanie kategorii prac])
         PU10([Edytowanie kategorii prac])
         PU11([Dodawanie/edytyowanie informacji o sobie])
-        PU12([Zmienianie layoutu strony głównej])
+        PU12([Personalizacja strony])
     end
 
     %% Relacje
@@ -89,6 +89,7 @@ flowchart LR
     Artysta --- PU10
     Artysta --- PU11
     Artysta --- PU12
+    PU7 --- | << extends >> | PU9
 ```
 -->
 
@@ -98,7 +99,7 @@ flowchart LR
 | **Nazwa** | Przeglądanie galerii zdjęć | 
 | :--- | :--- |
 | **Warunki wstępne** | Artysta udostępnił publicznie swoje portfolio w systemie ArtSea. |
-| **Podstawowy scenariusz interakcji** | 1. Odbiorca wchodzi na stronę galerii artysty.<br>2. System ładuje układ strony i wyświetla miniatury prac.<br>3. Odbiorca wybiera (klika) interesującą go miniaturę.<br> 4. System wyświetla powiększone zdjęcie w wysokiej rozdzielczości wraz tytułem, opisem, użytymi technikami itd.<br> 5. Odbiorca zamyka podgląd powiększonego zdjęcia.<br> 6. System powraca do widoku głównej galerii, zachowując pozycję przewijania.|
+| **Podstawowy scenariusz interakcji** | 1. Odbiorca wchodzi na podstrona galerii artysty.<br>2. System ładuje układ strony i wyświetla miniatury prac.<br>3. Odbiorca wybiera (klika) interesującą go miniaturę.<br> 4. System wyświetla powiększone zdjęcie w wysokiej rozdzielczości wraz tytułem, opisem, użytymi technikami itd.<br> 5. Odbiorca zamyka podgląd powiększonego zdjęcia.<br> 6. System powraca do widoku głównej galerii, zachowując pozycję przewijania.|
 | **Wyjątki i scenariusze alternatywne** | **Filtrowanie po kategorii:**<br>3a1. Odbiorca przed kliknięciem wybiera z menu konkretną kategorię prac (np. rzeźba)<br>3a2.System odświeża siatkę, pokazując wyłącznie miniatury z wybranej kategorii. <br><br> **Brak Prac:**<br> 2a. Portfolio jest puste. System wyświetla wiadomość typu: "Artysta nie dodał jeszcze żadnych prac. Zajrzyj tu wkrótce!" |
 | **Warunki końcowe** | Odbiorca pomyślnie obejrzał wybrane prace w portfolio. |
 | **Komentarze** | --- |
@@ -117,11 +118,12 @@ flowchart LR
 ### PU3 - Wybór języka
 | **Nazwa** | Wybór języka|
 | :--- | :--- |
-| **Warunki wstępne** | Odbiorca znajduje się w portfolio. System ma zaimplementowaną obsługę więcej niż jednego języka. |
+| **Warunki wstępne** | Odbiorca znajduje się w portfolio. System ma zaimplementowaną obsługę więcej niż jednego języka. Podstawowo strona wyświetla się w języku przeglądarki. |
 | **Podstawowy scenariusz interakcji** | 1. Odbiorca lokalizuje przycisk wyboru języka.<br>2. Odbiorca klika przycisk wyboru języka.<br>3. System wyświetla listę dostępnych języków.<br> 4. Odbiorca klika preferowany język.<br> 5. System przeładowuje stronę na wybrany język. |
-| **Wyjątki i scenariusze alternatywne** | **Brak tłumaczeń treści autorskich:**<br>5a. Interfejs platformy zmienia się na wybrany język, ale opisy zdjęć i biogram wprowadzone manualnie przez artystę pozostają w języku oryginalnym. System może opcjonalnie wyświetlić komunikat "Treści autorskie mogą nie być dostępne w wybranym języku".|
-| **Warunki końcowe** | System zapamiętuje wybór języka w pliku cookie/localStorage na urządzeniu Odbiorcy na czas trwania sesji i kolejnych wizyt. Interfejs prezentowany jest w wybranym języku. |
-| **Komentarze** | Czy tłumaczenie wprowadza artysta czy będzie automatyczne? |
+| **Wyjątki i scenariusze alternatywne** | **Brak tłumaczeń niektórych treści autorskich:**<br>5a. Interfejs platformy zmienia się na wybrany język, ale opisy zdjęć i biogram wprowadzone manualnie przez artystę pozostają w języku oryginalnym. System może opcjonalnie wyświetlić komunikat "Treści autorskie mogą nie być dostępne w wybranym języku".|
+| **Warunki końcowe** | Interfejs prezentowany jest w wybranym języku. |
+| **Komentarze** | --- |
+
 
 ## Przypadki użycia dla Artysty
 
@@ -129,8 +131,8 @@ flowchart LR
 | **Nazwa** | Rejestracja konta |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta nie posiada jeszcze konta w systemie ArtSea. |
-| **Podstawowy scenariusz interakcji** | 1. Artysta klika przycisk "Rejestracja" na stronie logowania.<br> 2. System wyświetla formularz rejestracji z polami: Adres e-mail, Hasło, Potwierdzenie hasła, Imię i Nazwisko.<br> <!-- TO DO - ustalic jakie dane potrzebne --> 3. Artysta wypełnia wszystkie wymagane pola.<br>4. Artysta klika przycisk "Utwórz konto".<br>5. System waliduje dane wejściowe.<br> <!--6. System wysyła wiadomość potwierdzającą na adres e-mail artysty.<br>7. System wyświetla komunikat: "Sprawdź swoją skrzynkę e-mailową, aby potwierdzić konto".<br>8. Artysta klika link potwierdzający w wiadomości e-mail.<br> TO DO - czy my chcemy potweirdzenie email --> 6. System aktywuje konto i kieruje artystę na stronę główną. |
-| **Wyjątki i scenariusze alternatywne** | **Błąd walidacji danych:**<br>5a. Adres e-mail jest już zarejestrowany, hasło jest zbyt słabe lub format danych jest nieprawidłowy. System podświetla błędne pola i wyświetla odpowiedni komunikat. <br><br> <!--**Brak potwierdzenia e-mail:**<br>  6a. Link potwierdzający wygasa po 24 godzinach. System wyświetla opcję wysłania nowego linku potwierdzającego. --> |
+| **Podstawowy scenariusz interakcji** | 1. Artysta klika przycisk "Rejestracja" na stronie głównej platformy.<br> 2. System wyświetla formularz rejestracji z polami: Adres e-mail, Hasło, Potwierdzenie hasła.<br> 3. Artysta wypełnia wszystkie wymagane pola.<br>4. Artysta klika przycisk "Utwórz konto".<br>5. System waliduje dane wejściowe.<br> 6. System wysyła wiadomość potwierdzającą na adres e-mail artysty.<br>7. System wyświetla komunikat: "Sprawdź swoją skrzynkę e-mailową, aby potwierdzić konto".<br>8. Artysta klika link potwierdzający w wiadomości e-mail.<br> 9. System aktywuje konto i kieruje artystę na panel edycji portfolio. |
+| **Wyjątki i scenariusze alternatywne** | **Błąd walidacji danych:**<br>5a. Adres e-mail jest już zarejestrowany, hasło jest zbyt słabe lub format danych jest nieprawidłowy. System podświetla błędne pola i wyświetla odpowiedni komunikat. <br><br> **Brak potwierdzenia e-mail:**<br>  6a. Link potwierdzający wygasa po 60 minutach. System wyświetla opcję wysłania nowego linku potwierdzającego. |
 | **Warunki końcowe** | Konto artysty zostaje pomyślnie utworzone i aktywowane. Artysta może zalogować się i przystąpić do konfiguracji profilu. |
 | **Komentarze** | Wymagania bezpieczeństwa dla hasła: minimum 8 znaków, co najmniej jedno duże litery, cyfra i znak specjalny. |
 <br><br>
@@ -138,38 +140,38 @@ flowchart LR
 ### PU5 - Dodawanie pracy
 | **Nazwa** | Dodawanie pracy |
 | :--- | :--- |
-| **Warunki wstępne** | Artysta jest zalogowany. |
+| **Warunki wstępne** | Artysta jest zalogowany w panelu edycji portfolio. |
 | **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę istniejących prac z przyciskiem "Dodaj pracę".<br>3. Artysta klika przycisk "Dodaj pracę".<br>4. System otwiera formularz do wypełniania detali pracy ([Wypełnianie detali pracy](#pu7---wypełnianie-detali-pracy) - PU7). |
 | **Wyjątki i scenariusze alternatywne** | --- |
 | **Warunki końcowe** | Artysta przechodzi do formularza [PU7](#pu7---wypełnianie-detali-pracy) w celu wypełniania informacji o nowej pracy. |
-| **Komentarze** | |
+| **Komentarze** | --- |
 <br><br>
 
 ### PU6 - Edytowanie pracy
 | **Nazwa** | Edytowanie pracy |
 | :--- | :--- |
-| **Warunki wstępne** | Artysta jest zalogowany. Posiada co najmniej jedną pracę w portfolio. |
-| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę prac artysty.<br>3. Artysta klika na pracę, którą chce edytować, lub klika ikonę "edytuj" obok pracy.<br>4. System otwiera formularz do edytowania detali pracy (patrz [Wypełnianie detali pracy](#pu7---wypełnianie-detali-pracy) - PU7). |
+| **Warunki wstępne** | Artysta jest zalogowany w panelu edycji portfolio. Posiada co najmniej jedną pracę w portfolio. |
+| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę prac artysty.<br>3. Artysta najeżdża kursorem na pracę, którą chce edytować.<br> 4. Artysta klika przycisk "Edytuj".<br> 5. System otwiera formularz do edytowania detali pracy (patrz [Wypełnianie detali pracy](#pu7---wypełnianie-detali-pracy) - PU7). |
 | **Wyjątki i scenariusze alternatywne** | --- |
 | **Warunki końcowe** | Artysta przechodzi do formularza [PU7](#pu7---wypełnianie-detali-pracy) w celu edytowania informacji o pracy. |
-| **Komentarze** | |
+| **Komentarze** | --- |
 <br><br>
 
 ### PU7 - Wypełnianie detali pracy
 | **Nazwa** | Wypełnianie detali pracy |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta przechodzi z przypadku [PU5 - Dodawanie pracy](#pu5---dodawanie-pracy) lub [PU6 - Edytowanie pracy](#pu6---edytowanie-pracy). System wyświetla formularz do wypełniania/edytowania pracy. |
-| **Podstawowy scenariusz interakcji** | 1. System wyświetla formularz do dodawania/edytowania pracy ze wszystkimi polami:<br>   - Zdjęcie/Obraz (wymagane) - drag-and-drop lub selektor<br>   - Tytuł (wymagane) - pole tekstowe<br>   - Kategoria (wymagane) - lista rozwijalna<br>   - Opis pracy (opcjonalnie) - pole tekstowe z formatowaniem<br>   - Technika/Metoda (opcjonalnie) - pole tekstowe<br>   - Wymiary (opcjonalnie) - wysokość × szerokość × głębokość (cm)<br>   - Materiały użyte (opcjonalnie) - pole tekstowe<br>   - Rok wykonania (opcjonalnie) - pole daty/liczby<br> 2. Artysta wypełnia wymagane pola (zdjęcie, tytuł, kategoria) i opcjonalne pola, które chce dodać.<br> 3. System automatycznie zapisuje wersje robocze podczas pisania (auto-save co 5 sekund) - wyświetla komunikat "Zapisywanie..." a następnie "Zapisano".<br> 4. Artysta klika przycisk "Zapisz pracę" lub "Zapisz zmiany".<br>5. System waliduje dane (sprawdza obowiązkowe pola, format zdjęcia).<br>6. System przesyła obraz na serwer, zapisuje dane w bazie danych i wyświetla komunikat o sukcesie. |
-| **Wyjątki i scenariusze alternatywne** | **Błąd walidacji:**<br>6a. Podczas walidacji: plik je zbyt duży (max ...), format nie obsługiwany (...), pole obowiązkowe jest puste lub format danych jest nieprawidłowy. System wyświetla komunikat z wymogami i wyróżnia błędne pola, umożliwiając poprawę danych.<br><br>**Brak połączenia internetowego:**<br>4a. Jeśli połączenie zostanie przerwane, system przechowuje dane w pamięci lokalnej przeglądarki i automatycznie synchronizuje po przywróceniu połączenia. Wyświetla komunikat "Pracujesz w trybie offline - zmiany zostaną wysłane".<br><br>**Anulowanie:**<br>5a. Artysta klika przycisk "Anuluj". W trybie dodawania - powraca do listy prac bez zapisania. W trybie edytowania - System pyta o potwierdzenie ("Jeśli wyjdziesz, niezapisane zmiany zostaną utracone") i powraca do listy prac bez zmian.<br><br>**Tworzenie nowej kategorii:**<br>3a. Jeśli wymagana kategoria nie istnieje, artysta może wybrać "Nowa kategoria" z listy, co otwiera ([patrz PU9](#pu9---dodawanie-kategorii-prac)), po czym powraca do formularza pracy z nową kategorią wybraną. |
+| **Podstawowy scenariusz interakcji** | 1. System wyświetla formularz do dodawania/edytowania pracy ze wszystkimi polami:<br>   - Zdjęcie/Obraz (wymagane) - drag-and-drop lub selektor<br>   - Tytuł (wymagane) - pole tekstowe<br>   - Kategoria (wymagane) - lista rozwijalna<br>   - Opis pracy (opcjonalnie) - pole tekstowe z formatowaniem<br>     - Wymiary (opcjonalnie) - wysokość × szerokość × głębokość (cm)<br>  - Rok wykonania (opcjonalnie) - pole daty/liczby<br> - Widoczność - checkbox <br>2. Artysta wypełnia wymagane pola (zdjęcie, tytuł, kategoria) i opcjonalne pola, które chce dodać.<br> 3. Artysta klika przycisk "Zapisz".<br>4. System waliduje dane (sprawdza obowiązkowe pola, format zdjęcia).<br>5. System przesyła obraz na serwer, zapisuje dane w bazie danych i wyświetla komunikat o sukcesie. |
+| **Wyjątki i scenariusze alternatywne** | **Tworzenie nowej kategorii:**<br>1a. Jeśli wymagana kategoria nie istnieje, artysta może wybrać "Nowa kategoria" z listy, co otwiera ([patrz PU9](#pu9---dodawanie-kategorii-prac)), po czym powraca do formularza pracy z nową kategorią wybraną.<br><br>**Brak połączenia internetowego:**<br>2a. Jeśli połączenie zostanie przerwane, system przechowuje dane w pamięci lokalnej przeglądarki i automatycznie synchronizuje po przywróceniu połączenia. Wyświetla komunikat "Pracujesz w trybie offline - zmiany zostaną wysłane".<br><br>**Anulowanie:**<br>2b. Artysta klika przycisk "Anuluj". W trybie dodawania - powraca do listy prac bez zapisania. W trybie edytowania - System pyta o potwierdzenie ("Jeśli wyjdziesz, niezapisane zmiany zostaną utracone") i powraca do listy prac bez zmian.<br><br> **Błąd walidacji:**<br>4a. Podczas walidacji: plik je zbyt duży, format nie obsługiwany lub pole obowiązkowe jest puste. System wyświetla komunikat z wymogami i wyróżnia błędne pola, umożliwiając poprawę danych.<br><br>|
 | **Warunki końcowe** | W trybie dodawania: Nowa praca zostaje dodana do galerii artysty ze wszystkimi wypełnionymi informacjami. Praca jest widoczna dla odbiorców.<br>W trybie edytowania: Zmiany w pracy są zapisywane. Aktualizowana praca jest natychmiast widoczna dla odbiorców. |
-| **Komentarze** | Formularz jest uniwersalny - używany zarówno do dodawania (PU5) jak i edytowania (PU6). Dozwolone formaty obrazów: ... . Maksymalny rozmiar: ... . Wymiary - format: liczba × liczba × liczba (cm). |
+| **Komentarze** | Formularz jest uniwersalny - używany zarówno do dodawania (PU5) jak i edytowania (PU6). |
 <br><br>
 
 ### PU8 - Usuwanie pracy
 | **Nazwa** | Usuwanie pracy |
 | :--- | :--- |
-| **Warunki wstępne** | Artysta jest zalogowany. Praca istnieje w galerii artysty. |
-| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę prac z paskami akcji (edytuj, usuń) dla każdej pracy.<br>3. Artysta klika przycisk "Usuń" na wybranej pracy.<br>4. System wyświetla okno potwierdzenia: "Jesteś pewny, że chcesz usunąć tę pracę? Tej akcji nie można cofnąć."<br>5. Artysta klika "Tak, usuń".<br>6. System usuwuje pracę z bazy danych i z serwera (w tym wszystkie zdjęcia i metadane).<br>7. System wyświetla komunikat "Praca została usunięta" i powraca do listy prac. |
+| **Warunki wstępne** | Artysta jest zalogowany w panelu edycji portfolio. Praca istnieje w galerii artysty. |
+| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę prac.<br>3. Artysta najeżdża kursorem na pracę, którą chce usunąć. <br> 4. Artysta klika przycisk "Usuń" na wybranej pracy.<br>5. System wyświetla okno potwierdzenia: "Jesteś pewny, że chcesz usunąć tę pracę? Tej akcji nie można cofnąć."<br>6. Artysta klika "Tak, usuń".<br>7. System usuwuje pracę z bazy danych i z serwera (w tym wszystkie zdjęcia i metadane).<br>8. System wyświetla komunikat "Praca została usunięta" i powraca do listy prac. |
 | **Wyjątki i scenariusze alternatywne** | **Anulowanie usunięcia:**<br>5a. Artysta klika "Anuluj" lub zamyka okno potwierdzenia. Praca pozostaje w systemie bez zmian.<br><br> |
 | **Warunki końcowe** | Praca jest trwale usunięta z galerii. Niewidoczna dla odbiorców i artysty. Miejsce na serwerze jest zwalniane. |
 | **Komentarze** | |
@@ -178,18 +180,18 @@ flowchart LR
 ### PU9 - Dodawanie kategorii prac
 | **Nazwa** | Dodawanie kategorii prac |
 | :--- | :--- |
-| **Warunki wstępne** | Artysta jest zalogowany. |
-| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Kategorie".<br>2. System wyświetla listę istniejących kategorii z przyciskiem "Dodaj kategorię".<br>3. Artysta klika przycisk "Dodaj kategorię".<br>4. System otwiera formularz z polami: Nazwa kategorii, Opis kategorii (opcjonalnie), Ikona/Obraz kategorii (opcjonalnie).<br>5. Artysta wypełnia nazwę kategorii (wymagane).<br>6. Artysta opcjonalnie dodaje ikonę reprezentującą kategorię.<br>7. Artysta klika "Zapisz".<br>8. System waliduje, że nazwa kategorii jest unikalna .<br>9. System dodaje nową kategorię i wyświetla ją na liście. |
+| **Warunki wstępne** | Artysta jest zalogowany  w panelu edycji portfolio. |
+| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Kategorie".<br>2. System wyświetla listę istniejących kategorii z przyciskiem "Dodaj kategorię".<br>3. Artysta klika przycisk "Dodaj kategorię".<br>4. System otwiera formularz z polami: Nazwa kategorii, Opis kategorii (opcjonalnie).<br>5. Artysta wypełnia nazwę kategorii (wymagane).<br>6. Artysta klika "Zapisz".<br>7. System waliduje, że nazwa kategorii jest unikalna .<br>8. System dodaje nową kategorię i wyświetla ją na liście. |
 | **Wyjątki i scenariusze alternatywne** | **Błąd duplikatu:**<br>8a. Kategoria o tej nazwie już istnieje. System wyświetla komunikat "Kategoria o tej nazwie już istnieje" i sugeruje opcję edycji istniejącej kategorii.<br><br> |
 | **Warunki końcowe** | Nowa kategoria jest dostępna dla artysty przy dodawaniu/edytowaniu prac. Kategoria jest widoczna  dla odbiorców. |
-| **Komentarze** | Każda kategoria powinna mieć unikalną nazwę. Maksymalna liczba kategorii: 50. |
+| **Komentarze** | Każda kategoria powinna mieć unikalną nazwę.|
 <br><br>
 
 ### PU10 - Edytowanie kategorii prac
 | **Nazwa** | Edytowanie kategorii prac |
 | :--- | :--- |
-| **Warunki wstępne** | Artysta jest zalogowany. Co najmniej jedna kategoria istnieje w systemie. |
-| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Kategorie".<br>2. System wyświetla listę kategorii.<br>3. Artysta klika na kategorię, którą chce edytować, lub klika ikonę "edytuj" obok nazwy kategorii.<br>4. System otwiera formularz edycji kategorii ze wszystkimi istniejącymi danymi.<br>5. Artysta zmienia potrzebne informacje (nazwę, opis, ikonę).<br>6. Artysta klika "Zapisz zmiany".<br>7. System waliduje dane (sprawdza unikalność nazwy).<br>8. System aktualizuje kategorię.<br>9. System wyświetla komunikat potwierdzający i powraca do listy kategorii. |
+| **Warunki wstępne** | Artysta jest zalogowany  w panelu edycji portfolio. Co najmniej jedna kategoria istnieje w systemie. |
+| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Kategorie".<br>2. System wyświetla listę kategorii.<br>3. Artysta najeżdza kursorem na kategorię, którą chce edytować i klika opcję "Edytuj".<br>4. System otwiera formularz edycji kategorii ze wszystkimi istniejącymi danymi.<br>5. Artysta zmienia potrzebne informacje (nazwę, opis).<br>6. Artysta klika "Zapisz zmiany".<br>7. System waliduje dane (sprawdza unikalność nazwy).<br>8. System aktualizuje kategorię.<br>9. System wyświetla komunikat potwierdzający i powraca do listy kategorii. |
 | **Wyjątki i scenariusze alternatywne** | **Błąd duplikatu nazwy:**<br>7a. Zmieniona nazwa kategorii już istnieje. System wyświetla komunikat błędu i umożliwia zmianę nazwy.<br><br>**Usuwanie kategorii:**<br>9a. Jeśli kategoria zawiera prace, artysta może wybrać opcję przeniesienia prac do innej kategorii przed usunięciem kategorii. |
 | **Warunki końcowe** | Zmiany w kategorii są zapisywane. Wszystkie prace przypisane do kategorii mają zaktualizowane informacje. |
 | **Komentarze** | Nie powinno być możliwe usunięcie kategorii, jeśli zawiera prace, bez uprzedniego przeniesienia prac do innej kategorii. |
@@ -198,19 +200,19 @@ flowchart LR
 ### PU11 - Dodawanie/edytowanie informacji o sobie
 | **Nazwa** | Dodawanie/edytowanie informacji o sobie |
 | :--- | :--- |
-| **Warunki wstępne** | Artysta jest zalogowany. Profil artysty istnieje w systemie. |
-| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Mój profil" lub "Ustawienia profilu".<br>2. System wyświetla formularz profilu z polami: Zdjęcie profilowe, Imię i Nazwisko, Biografia (pole tekstowe), Specjalizacja/Gatunek artystyczny, Edukacja, Doświadczenie, Linki do mediów społecznościowych (Instagram, Facebook, itp.).<br>3. Artysta wypełnia/aktualizuje pola z informacjami o sobie.<br>4. Artysta przesyła lub zmienia zdjęcie profilowe.<br>5. Artysta klika "Zapisz profil".<br>6. System waliduje dane.<br>7. System aktualizuje profil artysty.<br>8. System wyświetla komunikat potwierdzający zmianę. |
-| **Wyjątki i scenariusze alternatywne** | **Błąd walidacji zdjęcia:**<br>6a. Zdjęcie profilowe jest zbyt duże lub ma niedozwolony format. System wyświetla komunikat o wymaganiach i umożliwia ponowne przesłanie.<br><br> |
+| **Warunki wstępne** | Artysta jest zalogowany  w panelu edycji portfolio. Profil artysty istnieje w systemie. |
+| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Mój profil" lub "Ustawienia profilu".<br>2. System wyświetla formularz profilu z polami: Zdjęcie profilowe, Imię i Nazwisko, Biografia (pole tekstowe - *rich text editor*), Linki do mediów społecznościowych (Instagram, Facebook, itp.).<br>3. Artysta wypełnia/aktualizuje pola z informacjami o sobie.<br>4. Artysta przesyła lub zmienia zdjęcie profilowe.<br>5. Artysta klika "Zapisz profil".<br>6. System waliduje dane.<br>7. System aktualizuje profil artysty.<br>8. System wyświetla komunikat potwierdzający zmianę. |
+| **Wyjątki i scenariusze alternatywne** | **Błąd walidacji zdjęcia:**<br>6a. Zdjęcie profilowe jest zbyt duże lub ma niedozwolony format. System wyświetla komunikat o wymaganiach i umożliwia ponowne przesłanie.<br><br> **Brak połączenia internetowego:**<br>3a. Jeśli połączenie zostanie przerwane, system przechowuje dane w pamięci lokalnej przeglądarki i automatycznie synchronizuje po przywróceniu połączenia. Wyświetla komunikat "Pracujesz w trybie offline - zmiany zostaną wysłane".<br><br>**Anulowanie:**<br>3b. Artysta klika przycisk "Anuluj". System pyta o potwierdzenie ("Jeśli wyjdziesz, niezapisane zmiany zostaną utracone") i powraca strony głównej.<br><br> |
 | **Warunki końcowe** | Informacje artysty są aktualizowane w systemie. Zmiany są natychmiast widoczne dla odbiorców na publicznym profilu artysty. |
-| **Komentarze** | Biografia powinna mieć maksymalnie 1000 znaków. Zdjęcie profilowe powinno być w wysokiej rozdzielczości. |
+| **Komentarze** | --- |
 <br><br>
 
-### PU12 - Zmienianie layoutu strony głównej (Bento Box)
-| **Nazwa** | Zmienianie layoutu strony głównej |
+### PU12 - Personalizacja strony
+| **Nazwa** | Personalizacja strony |
 | :--- | :--- |
-| **Warunki wstępne** | Artysta jest zalogowany. Ma dostęp do sekcji "Ustawienia" > "Układ galerii" lub "Wygląd strony". |
-| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Ustawienia" > "Układ galerii".<br>2. System wyświetla edytor Bento Box z kafelkami zawierającymi pracami artysty.<br>3. Artysta widzi siatkę, gdzie każdy kafelek pracy ma rozmiar (1x1, 2x1, 1x2, 2x2, itp.).<br>4. Artysta może zmieniać rozmiary kafelków poprzez:<br>   - Resize handles (uchwyty) na krawędziach kafelków - przeciąganie aby zmienić rozmiar<br>   - Klikanie na kafelek i wybór predefiniowanych rozmiarów (mały, średni, duży, extra duży)<br>   - Drag-and-drop aby zmienić pozycję kafelku<br>5. System automatycznie dopasowuje pozycje pozostałych kafelków.<br>6. Artysta może wybrać temat kolorystyczny (jasny/ciemny) i typ czcionki z menu.<br>7. System wyświetla podgląd na żywo zmian.<br>8. Artysta klika "Zapisz układ" aby zatwierdzić zmiany.<br>9. System zapisuje nowy układ kafelków i wyświetla komunikat potwierdzający. |
-| **Wyjątki i scenariusze alternatywne** | **Anulowanie zmian:**<br>8a. Artysta klika "Anuluj" lub zamyka edytor bez zapisania. System pyta o potwierdzenie i powraca do poprzedniego układu bez zmian.<br><br>**Przywrócenie domyślnego układu:**<br>9a. Artysta może kliknąć "Resetuj do domyślnego" aby przywrócić automatycznie wygenerowany układ galerii. |
-| **Warunki końcowe** | Nowy układ Bento Box jest zapisany i natychmiast widoczny dla wszystkich odbiorców na stronie portfolio artysty. |
-| **Komentarze** | Układ powinno być responsywny na mobilu - kafelki automatycznie zmieniają rozmiary na mniejszych ekranach. |
+| **Warunki wstępne** | Artysta jest zalogowany  w panelu edycji portfolio. |
+| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Personalizacja".<br>2. System wyświetla edytor strony głównej Bento Box z kafelkami zawierającymi pracami artysty.<br>3. Artysta widzi siatkę, gdzie każdy kafelek pracy ma rozmiar (1x1, 2x1, 1x2, 2x2, itp.).<br>4. Artysta może zmieniać rozmiary kafelków poprzez:<br>   - Resize handles (uchwyty) na krawędziach kafelków - przeciąganie aby zmienić rozmiar<br>    - Drag-and-drop aby zmienić pozycję kafelku<br>5. System automatycznie dopasowuje pozycje pozostałych kafelków.<br>6. Artysta może wybrać gamę kolorystyczną i typ czcionki z menu.<br>7. System wyświetla podgląd na żywo zmian.<br>8. Artysta klika "Zapisz układ" aby zatwierdzić zmiany.<br>9. System zapisuje nowy układ kafelków i wyświetla komunikat potwierdzający. |
+| **Wyjątki i scenariusze alternatywne** | **Anulowanie zmian:**<br>8a. Artysta klika "Anuluj" lub zamyka edytor bez zapisania. System pyta o potwierdzenie i powraca do poprzedniego układu bez zmian.<br><br>**Przywrócenie domyślnego układu:**<br>9a. Artysta może kliknąć "Resetuj do domyślnego" aby przywrócić podstawowy układ galerii. |
+| **Warunki końcowe** | Nowe ustawienia są zapisane i widoczne dla wszystkich odbiorców na stronie portfolio artysty po odświeżeniu. |
+| **Komentarze** | Układ powinny być responsywny. |
 <br><br>
