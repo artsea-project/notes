@@ -1,9 +1,66 @@
 # Przypadki użycia Portfolio Artysty
 
+## Przypadki użycia dla Odbiorcy
+
+```mermaid
+flowchart LR
+    Odbiorca((Odbiorca))
+    SerwerEmail(("Serwer E-mail"))
+
+    subgraph ArtSea [Interfejs portfolio]
+        PU1([Przeglądanie galerii zdjęć])
+        PU2([Kontakt z artystą / Formularz])
+        PU3([Wybór języka interfejsu])
+    end
+
+    Odbiorca --> PU1
+    Odbiorca --> PU2
+    Odbiorca --> PU3
+    PU2 --> SerwerEmail
+```
+
+## Przypadki użycia dla Artysty
+
+```mermaid
+flowchart LR
+    Artysta((Artysta))
+    MediaSpolecznosciowe(("Media społecznościowe"))
+
+    subgraph ArtSea [Interfejs portfolio]
+        PU4([Rejestracja konta])
+        PU5([Dodawanie pracy])
+        PU6([Edytowanie pracy])
+        PU7([Wypełnienia detali pracy])
+        PU8([Usuwanie pracy])
+        PU9([Dodawanie kategorii prac])
+        PU10([Edytowanie kategorii prac])
+        PU11([Dodawanie/edytyowanie informacji o sobie])
+        PU12([Zmienianie layoutu strony głównej])
+        PU13([Integracja z mediami społecznościowymi])
+    end
+
+    Artysta --> PU4
+    Artysta --> PU5
+    Artysta --> PU6
+    Artysta --> PU8
+    Artysta --> PU9
+    Artysta --> PU10
+    Artysta --> PU11
+    Artysta --> PU12
+    Artysta --> PU13
+    PU5 --- | << includes >> | PU7
+    PU6 --- | << includes >> | PU7
+    PU13 --> MediaSpolecznosciowe
+```
+
+<!--
+Stary diagram (wszystkie przypadki użycia w jednym)
 ```mermaid
 flowchart LR
     %% Definicja aktora
     Odbiorca((Odbiorca))
+    Artysta((Artysta))
+    MediaSpolecznosciowe(("Media społecznościowe"))
     SerwerEmail(("Serwer E-mail"))
 
     %% Granice systemu ArtSea
@@ -11,6 +68,16 @@ flowchart LR
         PU1([Przeglądanie galerii zdjęć])
         PU2([Kontakt z artystą / Formularz])
         PU3([Wybór języka interfejsu])
+        PU4([Rejestracja konta])
+        PU5([Dodawanie pracy])
+        PU6([Edytowanie pracy])
+        PU7([Wypełnienia detali pracy])
+        PU8([Usuwanie pracy])
+        PU9([Dodawanie kategorii prac])
+        PU10([Edytowanie kategorii prac])
+        PU11([Dodawanie/edytyowanie informacji o sobie])
+        PU12([Zmienianie layoutu strony głównej])
+        PU13([Integracja z mediami społecznościowymi])
     end
 
     %% Relacje
@@ -18,7 +85,20 @@ flowchart LR
     Odbiorca --- PU2
     PU2 --- SerwerEmail
     Odbiorca --- PU3
+    Artysta --- PU4
+    Artysta --- PU5
+    Artysta --- PU6
+    PU5 --- | << includes >> | PU7
+    PU6 --- | << includes >> | PU7
+    Artysta --- PU8
+    Artysta --- PU9
+    Artysta --- PU10
+    Artysta --- PU11
+    Artysta --- PU12
+    Artysta --- PU13
+    PU13 --- MediaSpolecznosciowe
 ```
+-->
 
 ## Specyfikacja przypadków użycia
 
