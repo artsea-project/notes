@@ -125,7 +125,7 @@ flowchart LR
 
 ## Przypadki użycia dla Artysty
 
-<!-- PU4 -->
+### PU4 - Rejestracja konta
 | **Nazwa** | Rejestracja konta |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta nie posiada jeszcze konta w systemie ArtSea. |
@@ -135,37 +135,37 @@ flowchart LR
 | **Komentarze** | Wymagania bezpieczeństwa dla hasła: minimum 8 znaków, co najmniej jedno duże litery, cyfra i znak specjalny. |
 <br><br>
 
-<!-- PU5 -->
+### PU5 - Dodawanie pracy
 | **Nazwa** | Dodawanie pracy |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta jest zalogowany. |
-| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę istniejących prac z przyciskiem "Dodaj pracę".<br>3. Artysta klika przycisk "Dodaj pracę".<br>4. System otwiera formularz do wypełniania detali pracy (przypadek użycia *Wypełnianie detali pracy* - PU7). |
+| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę istniejących prac z przyciskiem "Dodaj pracę".<br>3. Artysta klika przycisk "Dodaj pracę".<br>4. System otwiera formularz do wypełniania detali pracy ([Wypełnianie detali pracy](#pu7---wypełnianie-detali-pracy) - PU7). |
 | **Wyjątki i scenariusze alternatywne** | --- |
-| **Warunki końcowe** | Artysta przechodzi do formularza PU7 w celu wypełniania informacji o nowej pracy. |
+| **Warunki końcowe** | Artysta przechodzi do formularza [PU7](#pu7---wypełnianie-detali-pracy) w celu wypełniania informacji o nowej pracy. |
 | **Komentarze** | |
 <br><br>
 
-<!-- PU6 -->
+### PU6 - Edytowanie pracy
 | **Nazwa** | Edytowanie pracy |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta jest zalogowany. Posiada co najmniej jedną pracę w portfolio. |
-| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę prac artysty.<br>3. Artysta klika na pracę, którą chce edytować, lub klika ikonę "edytuj" obok pracy.<br>4. System otwiera formularz do edytowania detali pracy (patrz przypadek użycia *Wypełnianie detali pracy* - PU7). |
+| **Podstawowy scenariusz interakcji** | 1. Artysta przechodzi do sekcji "Moje Prace".<br>2. System wyświetla listę prac artysty.<br>3. Artysta klika na pracę, którą chce edytować, lub klika ikonę "edytuj" obok pracy.<br>4. System otwiera formularz do edytowania detali pracy (patrz [Wypełnianie detali pracy](#pu7---wypełnianie-detali-pracy) - PU7). |
 | **Wyjątki i scenariusze alternatywne** | --- |
-| **Warunki końcowe** | Artysta przechodzi do formularza PU7 w celu edytowania informacji o pracy. |
+| **Warunki końcowe** | Artysta przechodzi do formularza [PU7](#pu7---wypełnianie-detali-pracy) w celu edytowania informacji o pracy. |
 | **Komentarze** | |
 <br><br>
 
-<!-- PU7 -->
+### PU7 - Wypełnianie detali pracy
 | **Nazwa** | Wypełnianie detali pracy |
 | :--- | :--- |
-| **Warunki wstępne** | Artysta przechodzi z przypadku PU5 (*Dodawanie pracy*) lub PU6 (*Edytowanie pracy*). System wyświetla formularz do wypełniania/edytowania pracy. |
+| **Warunki wstępne** | Artysta przechodzi z przypadku [PU5 - Dodawanie pracy](#pu5---dodawanie-pracy) lub [PU6 - Edytowanie pracy](#pu6---edytowanie-pracy). System wyświetla formularz do wypełniania/edytowania pracy. |
 | **Podstawowy scenariusz interakcji** | 1. System wyświetla formularz do dodawania/edytowania pracy ze wszystkimi polami:<br>   - Zdjęcie/Obraz (wymagane) - drag-and-drop lub selektor<br>   - Tytuł (wymagane) - pole tekstowe<br>   - Kategoria (wymagane) - lista rozwijalna<br>   - Opis pracy (opcjonalnie) - pole tekstowe z formatowaniem<br>   - Technika/Metoda (opcjonalnie) - pole tekstowe<br>   - Wymiary (opcjonalnie) - wysokość × szerokość × głębokość (cm)<br>   - Materiały użyte (opcjonalnie) - pole tekstowe<br>   - Rok wykonania (opcjonalnie) - pole daty/liczby<br> 2. Artysta wypełnia wymagane pola (zdjęcie, tytuł, kategoria) i opcjonalne pola, które chce dodać.<br> 3. System automatycznie zapisuje wersje robocze podczas pisania (auto-save co 5 sekund) - wyświetla komunikat "Zapisywanie..." a następnie "Zapisano".<br> 4. Artysta klika przycisk "Zapisz pracę" lub "Zapisz zmiany".<br>5. System waliduje dane (sprawdza obowiązkowe pola, format zdjęcia).<br>6. System przesyła obraz na serwer, zapisuje dane w bazie danych i wyświetla komunikat o sukcesie. |
-| **Wyjątki i scenariusze alternatywne** | **Błąd walidacji:**<br>6a. Podczas walidacji: plik je zbyt duży (max ...), format nie obsługiwany (...), pole obowiązkowe jest puste lub format danych jest nieprawidłowy. System wyświetla komunikat z wymogami i wyróżnia błędne pola, umożliwiając poprawę danych.<br><br>**Brak połączenia internetowego:**<br>4a. Jeśli połączenie zostanie przerwane, system przechowuje dane w pamięci lokalnej przeglądarki i automatycznie synchronizuje po przywróceniu połączenia. Wyświetla komunikat "Pracujesz w trybie offline - zmiany zostaną wysłane".<br><br>**Anulowanie:**<br>5a. Artysta klika przycisk "Anuluj". W trybie dodawania - powraca do listy prac bez zapisania. W trybie edytowania - System pyta o potwierdzenie ("Jeśli wyjdziesz, niezapisane zmiany zostaną utracone") i powraca do listy prac bez zmian.<br><br>**Tworzenie nowej kategorii:**<br>3a. Jeśli wymagana kategoria nie istnieje, artysta może wybrać "Nowa kategoria" z listy, co otwiera (patrz PU9), po czym powraca do formularza pracy z nową kategorią wybraną. |
+| **Wyjątki i scenariusze alternatywne** | **Błąd walidacji:**<br>6a. Podczas walidacji: plik je zbyt duży (max ...), format nie obsługiwany (...), pole obowiązkowe jest puste lub format danych jest nieprawidłowy. System wyświetla komunikat z wymogami i wyróżnia błędne pola, umożliwiając poprawę danych.<br><br>**Brak połączenia internetowego:**<br>4a. Jeśli połączenie zostanie przerwane, system przechowuje dane w pamięci lokalnej przeglądarki i automatycznie synchronizuje po przywróceniu połączenia. Wyświetla komunikat "Pracujesz w trybie offline - zmiany zostaną wysłane".<br><br>**Anulowanie:**<br>5a. Artysta klika przycisk "Anuluj". W trybie dodawania - powraca do listy prac bez zapisania. W trybie edytowania - System pyta o potwierdzenie ("Jeśli wyjdziesz, niezapisane zmiany zostaną utracone") i powraca do listy prac bez zmian.<br><br>**Tworzenie nowej kategorii:**<br>3a. Jeśli wymagana kategoria nie istnieje, artysta może wybrać "Nowa kategoria" z listy, co otwiera ([patrz PU9](#pu9---dodawanie-kategorii-prac)), po czym powraca do formularza pracy z nową kategorią wybraną. |
 | **Warunki końcowe** | W trybie dodawania: Nowa praca zostaje dodana do galerii artysty ze wszystkimi wypełnionymi informacjami. Praca jest widoczna dla odbiorców.<br>W trybie edytowania: Zmiany w pracy są zapisywane. Aktualizowana praca jest natychmiast widoczna dla odbiorców. |
 | **Komentarze** | Formularz jest uniwersalny - używany zarówno do dodawania (PU5) jak i edytowania (PU6). Dozwolone formaty obrazów: ... . Maksymalny rozmiar: ... . Wymiary - format: liczba × liczba × liczba (cm). |
 <br><br>
 
-<!-- PU8 -->
+### PU8 - Usuwanie pracy
 | **Nazwa** | Usuwanie pracy |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta jest zalogowany. Praca istnieje w galerii artysty. |
@@ -175,7 +175,7 @@ flowchart LR
 | **Komentarze** | |
 <br><br>
 
-<!-- PU9 -->
+### PU9 - Dodawanie kategorii prac
 | **Nazwa** | Dodawanie kategorii prac |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta jest zalogowany. |
@@ -185,7 +185,7 @@ flowchart LR
 | **Komentarze** | Każda kategoria powinna mieć unikalną nazwę. Maksymalna liczba kategorii: 50. |
 <br><br>
 
-<!-- PU10 -->
+### PU10 - Edytowanie kategorii prac
 | **Nazwa** | Edytowanie kategorii prac |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta jest zalogowany. Co najmniej jedna kategoria istnieje w systemie. |
@@ -195,7 +195,7 @@ flowchart LR
 | **Komentarze** | Nie powinno być możliwe usunięcie kategorii, jeśli zawiera prace, bez uprzedniego przeniesienia prac do innej kategorii. |
 <br><br>
 
-<!-- PU11 -->
+### PU11 - Dodawanie/edytowanie informacji o sobie
 | **Nazwa** | Dodawanie/edytowanie informacji o sobie |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta jest zalogowany. Profil artysty istnieje w systemie. |
@@ -205,7 +205,7 @@ flowchart LR
 | **Komentarze** | Biografia powinna mieć maksymalnie 1000 znaków. Zdjęcie profilowe powinno być w wysokiej rozdzielczości. |
 <br><br>
 
-<!-- PU12 -->
+### PU12 - Zmienianie layoutu strony głównej (Bento Box)
 | **Nazwa** | Zmienianie layoutu strony głównej |
 | :--- | :--- |
 | **Warunki wstępne** | Artysta jest zalogowany. Ma dostęp do sekcji "Ustawienia" > "Układ galerii" lub "Wygląd strony". |
