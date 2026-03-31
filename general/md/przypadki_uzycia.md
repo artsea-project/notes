@@ -94,17 +94,17 @@ flowchart LR
 
 ## Specyfikacja przypadków użycia
 
-<!-- PU1 -->
+### PU1 - Przeglądanie galerii zdjęć
 | **Nazwa** | Przeglądanie galerii zdjęć | 
 | :--- | :--- |
-| **Warunki wstępne** | Artysta udostępnił publicznie swoje portfolio w systemie ArtSea, w którym znajduje się co najmniej jedna praca graficzna. |
+| **Warunki wstępne** | Artysta udostępnił publicznie swoje portfolio w systemie ArtSea. |
 | **Podstawowy scenariusz interakcji** | 1. Odbiorca wchodzi na stronę galerii artysty.<br>2. System ładuje układ strony i wyświetla miniatury prac.<br>3. Odbiorca wybiera (klika) interesującą go miniaturę.<br> 4. System wyświetla powiększone zdjęcie w wysokiej rozdzielczości wraz tytułem, opisem, użytymi technikami itd.<br> 5. Odbiorca zamyka podgląd powiększonego zdjęcia.<br> 6. System powraca do widoku głównej galerii, zachowując pozycję przewijania.|
 | **Wyjątki i scenariusze alternatywne** | **Filtrowanie po kategorii:**<br>3a1. Odbiorca przed kliknięciem wybiera z menu konkretną kategorię prac (np. rzeźba)<br>3a2.System odświeża siatkę, pokazując wyłącznie miniatury z wybranej kategorii. <br><br> **Brak Prac:**<br> 2a. Portfolio jest puste. System wyświetla wiadomość typu: "Artysta nie dodał jeszcze żadnych prac. Zajrzyj tu wkrótce!" |
 | **Warunki końcowe** | Odbiorca pomyślnie obejrzał wybrane prace w portfolio. |
-| **Komentarze** | idk w końcu jak robimy z tymi podstronami |
+| **Komentarze** | --- |
 <br><br>
 
-<!-- PU2 -->
+### PU2 - Kontakt z artystą / Formularz
 | **Nazwa** | Kontakt z artystą / Formularz |
 | :--- | :--- |
 | **Warunki wstępne** | Odbiorca znajduje się w portfolio artysty. Artysta włączył opcję formularza kontaktowego w ustawieniach systemu. |
@@ -114,8 +114,8 @@ flowchart LR
 | **Komentarze** | --- |
 <br><br>
 
-<!-- PU3 -->
-| **Nazwa** | Wybór języka interfejsu |
+### PU3 - Wybór języka
+| **Nazwa** | Wybór języka|
 | :--- | :--- |
 | **Warunki wstępne** | Odbiorca znajduje się w portfolio. System ma zaimplementowaną obsługę więcej niż jednego języka. |
 | **Podstawowy scenariusz interakcji** | 1. Odbiorca lokalizuje przycisk wyboru języka.<br>2. Odbiorca klika przycisk wyboru języka.<br>3. System wyświetla listę dostępnych języków.<br> 4. Odbiorca klika preferowany język.<br> 5. System przeładowuje stronę na wybrany język. |
