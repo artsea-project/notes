@@ -69,23 +69,24 @@
     table.cell(rowspan: 6)[Artysta],
     [Rejestracja konta], // to disscuss
     [MUST],
-    [Dodawanie/edytowanie/usuwanie grafik, zdjęć, opisów, kategorii prac],
+    [Dodawanie/edytowanie/usuwanie grafik, zdjęć, opisów, kategorii prac], //rozbic
     [MUST],
     [Dodanie/edytowianie informacji o sobie],
     [MUST],
     [Moliwość zmieniania layoutu strony głównej (_bento box_)],
     [SHOULD],
-    [Możliwość dodawania gifów],
+    [Możliwość dodawania wideo], // gif, mp4 ...
     [SHOULD],
     [Integracja z mediami społecznościowymi],
     [COULD],
+    // dodawanie tresci w innych jezykach
     formatted_table_sep,
     table.cell(rowspan: 3)[Odbiorcy],
     [Przeglądanie galerii zdjęć],
     [MUST],
     [Możliwość kontaktu z artystą (np. formularz kontaktowy)],
     [MUST],
-    [Wybór języka interfejsu],
+    [Wybór języka interfejsu], 
     [SHOULD],
     formatted_table_sep,
     // To discuss - advised to remove administrator

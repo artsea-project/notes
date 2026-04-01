@@ -115,6 +115,7 @@ flowchart LR
 | **Komentarze** | --- |
 <br><br>
 
+<!-- tylko polski i angielski -->
 ### PU3 - Wybór języka
 | **Nazwa** | Wybór języka|
 | :--- | :--- |
@@ -156,7 +157,7 @@ flowchart LR
 | **Warunki końcowe** | Artysta przechodzi do formularza [PU7](#pu7---wypełnianie-detali-pracy) w celu edytowania informacji o pracy. |
 | **Komentarze** | --- |
 <br><br>
-
+<!-- wiele zdjec + zdjecie wiodace (np kolejnosc - priorytet), mozliwosc wpisywania w dwoch jezykach -->
 ### PU7 - Wypełnianie detali pracy
 | **Nazwa** | Wypełnianie detali pracy |
 | :--- | :--- |
@@ -176,7 +177,7 @@ flowchart LR
 | **Warunki końcowe** | Praca jest trwale usunięta z galerii. Niewidoczna dla odbiorców i artysty. Miejsce na serwerze jest zwalniane. |
 | **Komentarze** | |
 <br><br>
-
+<!--  pusta kategoria nie dostepna dla odbiorcow --->
 ### PU9 - Dodawanie kategorii prac
 | **Nazwa** | Dodawanie kategorii prac |
 | :--- | :--- |
