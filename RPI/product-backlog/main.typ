@@ -168,3 +168,34 @@
   + Maria otwiera przeglądarkę na swoim smartfonie i wpisuje adres strony Otylii. Strona ładuje się szybko, a interfejs jest czytelny i dostosowany do urządzenia mobilnego.
   + Maria przegląda galerię prac Otylii, korzystając z funkcji filtrowania, aby wyświetlić tylko obrazy olejne. Klikając na miniaturkę pracy, może zobaczyć większe zdjęcie oraz szczegóły, takie jak tytuł, wymiary i opis.
   + Zainteresowana jedną z prac, Maria klika przycisk "O mnie", który przenosi ją do sekcji informacji o artyście. Znajduje tam biogram Otylii, jej zdjęcie profilowe oraz linki do mediów społecznościowych. Po zapoznaniu się z informacjami, Maria klika przycisk preferowanej platformy (np. Instagram), aby skontaktować się z Otylią.
+
+= Backlog produktu
+
+Do zarządzania wymaganiami i procesem wytwórczym wybrano narzędzie Jira. System został podzielony na Epiki, które grupują powiązane ze sobą przypadki użycia oraz wymagania techniczne.
+
+== Struktura Backlogu
+
+Zadania w backlogu zostały pogrupowane w cztery Epiki - główne obszary biznesowe:
+
++ System kont i autoryzacji - bezpieczeństwo i dostęp do panelu.
+
++ Zarządzanie treścią portfolio - główny moduł CMS do obsługi prac i kategorii.
+
++ Personalizacja - narzędzia do budowania unikalnej marki artysty (Bento Box, sekcja „O mnie”).
+
++ Interfejs odbiorcy i komunikacja  funkcje skierowane do klienta końcowego.
+
+#figure(
+  image("jira-ss.png"),
+  caption: [Zrzut ekranu z backlogu w Jira]
+)
+
+== Hierarchia i Priorytetyzacja
+
+Wprowadzono następującą skalę priorytetów:
+
+- Highest (MVP - Minimum Viable Product): Obejmuje kluczowe funkcjonalności, bez których system nie może istnieć, takie jak rejestracja konta, dodawanie prac czy przeglądanie galerii.
+
+- High (Wymagania niefunkcjonalne i techniczne): Do tej grupy przypisano krytyczne aspekty jakościowe, takie jak wdrożenie certyfikatu SSL, optymalizacja czasu ładowania grafik oraz responsywność interfejsu.
+
+- Low: Obejmuje funkcje rozszerzające możliwości systemu, takie jak integracja z mediami społecznościowymi czy wybór motywu kolorystycznego.
