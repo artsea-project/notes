@@ -209,6 +209,8 @@ Priorytety zadań zostały ustalone na podstawie ich wpływu na kluczowe funkcjo
 
 = Kryteria akceptacji
 
+== Kryteria akceptacji funkcjonalności
+
 Kryteria akceptacji dla wybranych 4 funkcjonalności z backlogu:
 
 #figure(
@@ -230,3 +232,37 @@ Kryteria akceptacji dla wybranych 4 funkcjonalności z backlogu:
   image("editing-categories-acceptance-criteria.png"),
   caption: [Zrzut ekranu z backlogu w Jira - edycja kategorii]
 )
+
+== Ogólne kryteria akceptacji
+
+Produkt uznaje się za gotowy do wdrożenia na środowisko produkcyjne, gdy spełnione są następujące warunki:
+
+=== Kryteria Funkcjonalne:
+
+- Wszystkie główne scenariusze biznesowe (Budowa portfolio, Budowa marki, Przeglądanie portfolio) są realizowane od początku do końca bez wystąpienia błędów krytycznych.
+
+- Wszystkie zadania z backlogu produktu posiadające priorytet Highest zostały zaimplementowane, pomyślnie przetestowane i mają status "Done" w systemie Jira.
+
+- System umożliwia pełną rejestrację, logowanie oraz zarządzanie treścią przez twórcę bez konieczności ingerencji administratora w bazę danych.
+
+=== Kryteria Jakościowe i Wydajnościowe:
+
+- Interfejs użytkownika jest w pełni responsywny (RWD) - dostosowuje się poprawnie do urządzeń mobilnych oraz ekranów desktopowych.
+
+- Aplikacja jest w pełni kompatybilna i renderuje się poprawnie w najnowszych wersjach najpopularniejszych przeglądarek (Google Chrome, Safari, Mozilla Firefox, Microsoft Edge).
+
+=== Kryteria Bezpieczeństwa:
+
+- Aplikacja została wdrożona na środowisko produkcyjne i ruch sieciowy jest w całości szyfrowany za pomocą aktywnego certyfikatu SSL (wymuszone przekierowanie na protokół HTTPS).
+
+- Wszystkie hasła użytkowników są bezpiecznie haszowane w bazie danych.
+
+- Baza danych nie jest wystawiona na publiczny dostęp z zewnątrz (dostęp ograniczony wyłącznie dla zaufanych usług aplikacyjnych).
+
+=== Kryteria Organizacyjne i Wdrożeniowe:
+
+- Finalny kod źródłowy MVP został scalony do głównej gałęzi w repozytorium GitHub.
+
+- Dokumentacja techniczna oraz infrastrukturalna w repozytorium notes została zaktualizowana i odpowiada stanowi faktycznemu wdrażanej aplikacji.
+
+- Projekt pomyślnie przeszedł końcowe testy akceptacyjne przeprowadzone przez zespół deweloperski wcielający się w role modelowych użytkowników.
