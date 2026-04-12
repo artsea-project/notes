@@ -185,6 +185,8 @@ Zadania w backlogu zostały pogrupowane w cztery Epiki - główne obszary biznes
 
 + Interfejs odbiorcy i komunikacja  funkcje skierowane do klienta końcowego.
 
++ Wymagania jakościowe - zadania związane z optymalizacją i zapewnieniem jakości produktu.
+
 #figure(
   image("jira-ss.png"),
   caption: [Zrzut ekranu z backlogu w Jira]
@@ -194,8 +196,13 @@ Zadania w backlogu zostały pogrupowane w cztery Epiki - główne obszary biznes
 
 Wprowadzono następującą skalę priorytetów:
 
-- Highest (MVP - Minimum Viable Product): Obejmuje kluczowe funkcjonalności, bez których system nie może istnieć, takie jak rejestracja konta, dodawanie prac czy przeglądanie galerii.
+- Highest (MVP - Minimum Viable Product)
+- High
+- Low
+- Lowest
 
-- High (Wymagania niefunkcjonalne i techniczne): Do tej grupy przypisano krytyczne aspekty jakościowe, takie jak wdrożenie certyfikatu SSL, optymalizacja czasu ładowania grafik oraz responsywność interfejsu.
-
-- Low: Obejmuje funkcje rozszerzające możliwości systemu, takie jak integracja z mediami społecznościowymi czy wybór motywu kolorystycznego.
+Priorytety zadań zostały ustalone na podstawie ich wpływu na kluczowe funkcjonalności systemu oraz potrzeb użytkowników opisanych w pliku "project-organization-and-infrastructure.pdf". Schemat prioretyzacji MOSCoW został zmapowany na powyższą skalę, gdzie:
+  - Must -> Highest
+  - Should -> High
+  - Could -> Low
+  - Wont -> Lowest
