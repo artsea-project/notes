@@ -266,3 +266,29 @@ Produkt uznaje się za gotowy do wdrożenia na środowisko produkcyjne, gdy spe�
 - Dokumentacja techniczna oraz infrastrukturalna w repozytorium notes została zaktualizowana i odpowiada stanowi faktycznemu wdrażanej aplikacji.
 
 - Projekt pomyślnie przeszedł końcowe testy akceptacyjne przeprowadzone przez zespół deweloperski wcielający się w role modelowych użytkowników.
+
+= Definicja ukończenia
+
+Element backlogu produktu uznaje się za ukończony, gdy spełnione są wszystkie poniższe warunki:
+
+- *Kryteria Akceptacji:*
+  - Wszystkie specyficzne Kryteria Akceptacji zdefiniowane dla danego zadania w systemie Jira zostały zweryfikowane i pomyślnie spełnione.
+
+- *Jakość i standardy kodu:*
+  - Kod został wypchnięty do odpowiedniego repozytorium.
+  - Zmiany w kodzie przeszły pomyślnie proces Code Review (akceptacja Pull Requesta przez przynajmniej jednego innego członka zespołu).
+
+- *Testy:*
+  - Funkcjonalność została przetestowana manualnie na środowisku deweloperskim.
+  - Zweryfikowano poprawność wyświetlania i działania interfejsu na urządzeniach mobilnych oraz desktopowych (zgodnie z założeniami responsywności RWD).
+  - Sprawdzono poprawne działanie funkcji w najpopularniejszych przeglądarkach internetowych.
+
+- *Bezpieczeństwo:*
+  - Nowe funkcje nie obniżają poziomu bezpieczeństwa systemu (np. poprawna walidacja formularzy, brak wycieków danych wrażliwych).
+
+- *Dokumentacja:*
+  - Zaktualizowano dokumentację techniczną w repozytorium `notes` (jeśli nowa funkcjonalność tego wymagała).
+  - Wprowadzony kod jest czytelny i posiada niezbędne komentarze.
+
+- *Administracja:*
+  - Status zadania w systemie Jira został oficjalnie zmieniony na "Done".
