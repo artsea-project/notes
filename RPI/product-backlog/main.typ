@@ -206,3 +206,27 @@ Priorytety zadań zostały ustalone na podstawie ich wpływu na kluczowe funkcjo
   - Should -> High
   - Could -> Low
   - Wont -> Lowest
+
+= Kryteria akceptacji
+
+Kryteria akceptacji dla wybranych 4 funkcjonalności z backlogu:
+
+#figure(
+  image("about-me-section-acceptance-criteria.png"),
+  caption: [Zrzut ekranu z backlogu w Jira - sekcja „O mnie”]
+)
+
+#figure(
+  image("bento-box-acceptance-criteria.png"),
+  caption: [Zrzut ekranu z backlogu w Jira - Bento Box]
+)
+
+#figure(
+  image("adding-categories-acceptance-criteria.png"),
+  caption: [Zrzut ekranu z backlogu w Jira - dodawanie kategorii]
+)
+
+#figure(
+  image("editing-categories-acceptance-criteria.png"),
+  caption: [Zrzut ekranu z backlogu w Jira - edycja kategorii]
+)
