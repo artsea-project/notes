@@ -9,6 +9,7 @@
     (name: "Benjamin Jurewicz", studentID: "198326"),
     (name: "Marta Kociszewska", studentID: "198143"),
     (name: "Lidia Zawrzykraj", studentID: "198257"),
+    (name: "Piotr Kierznowski", studentID: "197652"),
   ),
 
   // Jesli chcesz custom date to odkomentuj, podstawowo jest dzisiejsza
