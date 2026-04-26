@@ -31,13 +31,13 @@
 
 = Opis projektu i produktu
 == Nazwa i ogólna koncepcja
-- *ArtSea* - system zarządzania protfolio artysty
+- *ArtSea* - system zarządzania portfolio artysty
 - *Ogólna koncepcja* - system planowany jest jako platforma, umożliwiająca artystom błyskawiczne generowanie własnych stron internetowych z ich twórczością
 
 == Adresowany problem i obszar zastosowania
 - *Problemy*:
   - Trudność techniczna: Artyści nie potrafią samodzielnie postawić (stworzyć) strony
-  - Brak spójności: Portfolia w mediach społecznościowych są rozproszone i niespójne
+  - Brak spójności: Portfolio w mediach społecznościowych są rozproszone i niespójne
   - Wysokie koszty: Zatrudnienie dewelopera jest zbyt drogie dla początkujących twórców
 - *Obszar zastosowania*:
   - Sektor kreatywny, promocja sztuki w Internecie oraz digitalizacja dorobku artystycznego.
@@ -50,13 +50,13 @@
 
 = Oszacowanie rozmiaru backlogu produktu
 
-= Założenia i dobrór zakresu sprintu
+= Założenia i dobór zakresu sprintu
 
 = Cel sprintu
-
 
 = Backlog produktu
 
 = Kryteria akceptacji
 
 = Definicja ukończenia
+
