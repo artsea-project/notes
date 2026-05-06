@@ -37,6 +37,7 @@ erDiagram
         string art_piece_id PK
         string user_id FK
         string category_id FK
+        bit is_featured
         string title_PLN
         string title_ENG
         string dimensions
@@ -78,7 +79,7 @@ erDiagram
     USER ||--o| PROFILE : "owns"
     USER ||--o{ CATEGORY : "creates"
     USER ||--o{ ART_PIECE : "uploads"
-    ART_PIECE }o--|| CATEGORY : "belongs to"
+    ART_PIECE }o--|{ CATEGORY : "belongs to"
     ART_PIECE ||--o{ MEDIA : "has"
     ART_PIECE ||--o{ ART_PIECE_TAGS : "tagged with"
     TAG ||--|{ ART_PIECE_TAGS : "tags"
