@@ -4,43 +4,51 @@
 ```mermaid
 erDiagram
     USER {
-        string id PK
+        string user_id PK
         string email
         string password_hash
         datetime created_at
     }
 
     PROFILE {
-        string id PK
+        string profile_id PK
         string user_id FK
         string full_name
-        jsonb bio 
+        jsonb bio_PLN
+        jsonb bio_ENG
         string profile_image_url
-        string instagram_url
-        string facebook_url
-        string twitter_url
-        string linkedin_url
     }
 
+    LINKS {
+        string link_id PK
+        string profile_id FK
+        string name
+        string url
+    }
+    
     CATEGORY {
-        string id PK
+        string category_id PK
         string user_id FK
-        string name 
+        string name_PLN
+        string name_ENG 
     }
 
     ART_PIECE {
-        string id PK
+        string art_piece_id PK
         string user_id FK
         string category_id FK
-        string title
+        string title_PLN
+        string title_ENG
         string dimensions
-        text mini_description
-        text description
+        jsonb mini_description_PLN
+        jsonb mini_description_ENG
+        jsonb description_PLN
+        jsonb description_ENG
         datetime uploaded_at
     }
 
     MEDIA {
-        string id PK
+        string media_id PK
         string art_piece_id FK
         string file_url
         string file_type "png | jpg | gif | mp4 | pdf"
@@ -48,9 +56,10 @@ erDiagram
     }
 
     TAG {
-        string id PK
+        string tag_id PK
         string user_id FK
-        string name 
+        string name_PLN
+        string name_ENG
     }
 
     ART_PIECE_TAGS {
@@ -59,7 +68,7 @@ erDiagram
     }
 
     SITE_SETTINGS {
-        string id PK
+        string site_settings_id PK
         string user_id FK
         jsonb theme "colors, fonts, spacing"
         jsonb layout_bento_box "grid configuration"
@@ -74,6 +83,7 @@ erDiagram
     ART_PIECE ||--o{ ART_PIECE_TAGS : "tagged with"
     TAG ||--|{ ART_PIECE_TAGS : "tags"
     USER ||--o| SITE_SETTINGS : "configures"
+    PROFILE ||--o{ LINKS : "has"
 ```
 
 ### Table Descriptions
