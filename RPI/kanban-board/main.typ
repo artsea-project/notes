@@ -31,6 +31,25 @@
 #import "@preview/unify:0.6.0": num, numrange, qty, qtyrange, unit
 
 = O projekcie i produkcie
+
+== Nazwa i ogólna koncepcja
+- *ArtSea* - system zarządzania portfolio artysty
+- *Ogólna koncepcja* - system planowany jest jako platforma, umożliwiająca artystom błyskawiczne generowanie własnych stron internetowych z ich twórczością
+
+== Adresowany problem i obszar zastosowania
+- *Problemy*:
+  - Trudność techniczna: Artyści nie potrafią samodzielnie postawić (stworzyć) strony
+  - Brak spójności: Portfolio w mediach społecznościowych są rozproszone i niespójne
+  - Wysokie koszty: Zatrudnienie dewelopera jest zbyt drogie dla początkujących twórców
+- *Obszar zastosowania*:
+  - Sektor kreatywny, promocja sztuki w Internecie oraz digitalizacja dorobku artystycznego.
+
+== Rynek i organizacja
+- *Skala działalności:*
+  - Projekt adresowany jest do twórców na poziomie krajowym i europejskim.
+- *Rynek:*
+  - Artyści niezależni, studenci uczelni artystycznych oraz małe galerie sztuki.
+
 = Stany zgłoszeń/zadań
 = Limity WIP (Work in Progress)
 = Tablica Kanban
