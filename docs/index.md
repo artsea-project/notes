@@ -1,6 +1,7 @@
 # Docs index
 
 - [ArtSea-Kansei.pdf](./ArtSea-Kansei.pdf)
+- [RPI-kanban-board.pdf](./RPI-kanban-board.pdf)
 - [RPI-product-backlog.pdf](./RPI-product-backlog.pdf)
 - [RPI-project-organization-and-infrastructure.pdf](./RPI-project-organization-and-infrastructure.pdf)
 - [RPI-sprint-backlog.pdf](./RPI-sprint-backlog.pdf)
