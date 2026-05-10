@@ -121,7 +121,7 @@ Domyślny zestaw stanów został rozszerzony, aby odzwierciedlał zdefiniowaną 
     formatted_table_sep,
     [TESTY (IN TESTING)],
     [2],
-    [Za proces QA i testowanie odpowiada głównie jedna osoba.Zbyt wysoki limit w tej kolumnie mógłby doprowadzić do jej przeciążenia i zablokowania procesu dostarczania gotowego oprogramowania. Limit 2 pozwala na płynną i dokładną weryfikację funkcjonalności.],
+    [Za proces QA i testowanie odpowiada głównie jedna osoba. Zbyt wysoki limit w tej kolumnie mógłby doprowadzić do jej przeciążenia i zablokowania procesu dostarczania gotowego oprogramowania. Limit 2 pozwala na płynną i dokładną weryfikację funkcjonalności.],
     formatted_table_sep,
     [GOTOWE (DONE):],
     [Brak limitu],
