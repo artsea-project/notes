@@ -80,7 +80,7 @@ Domyślny zestaw stanów został rozszerzony, aby odzwierciedlał zdefiniowaną 
     [Akceptacja zmian (Pull Requesta) przez inną osobę z zespołu],
     formatted_table_sep,
     [TESTY (IN TESTING)],
-    [Kod przeszedł weryfikację i czeka na manualne testy funkcjonalności na środowisku lokalnym/deweloperskim],
+    [Kod przeszedł weryfikację i czeka na testowanie (manualne i/lub automatyczne) na środowisku lokalnym/deweloperskim],
     [Kryterium przejścia: Pomyślne przejście testów realizowanych przez osobę odpowiedzialną za QA],
     formatted_table_sep,
     [GOTOWE (DONE):],
