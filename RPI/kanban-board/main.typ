@@ -56,7 +56,7 @@ Domyślny zestaw stanów został rozszerzony, aby odzwierciedlał zdefiniowaną 
 
 #formatted_table(
   caption: [Stany zadań na tablicy Kanban],
-  columnsCount: (auto, auto, 1fr),
+  columnsCount: 3,
   ref: "tab:requirements",
   // format: (auto, auto, auto),
   (
@@ -96,7 +96,7 @@ Domyślny zestaw stanów został rozszerzony, aby odzwierciedlał zdefiniowaną 
 
 #formatted_table(
   caption: [Stany zadań na tablicy Kanban],
-  columnsCount: (auto, auto, 1fr),
+  columnsCount: 3,
   ref: "tab:requirements",
   // format: (auto, auto, auto),
   (
@@ -131,4 +131,33 @@ Domyślny zestaw stanów został rozszerzony, aby odzwierciedlał zdefiniowaną 
 
 = Tablica Kanban
 
+#figure(
+  image("sprint1-kanban-jira.png"),
+  caption: [Zrzut ekranu z tablicy sprintu w Jira]
+)
+
 = Metryki produktywności
+
+== Czas cyklu (Cycle Time)
+
+Czas poświęcony na realizację zadania. Liczony od momentu przesunięcia karty z kolumny _TO DO_ do _IN PROGRESS_, aż do momentu osiągnięcia statusu _DONE_.
+
+*Cel monitorowania:* Pozwala ocenić rzeczywistą efektywność dewelopmentu i sprawdzić, czy złożoność zadań (wyrażona w Story Points) przekłada się na przewidywalny czas ich wykonania.
+
+== Czas realizacji (Lead Time)
+
+Całkowity czas życia zadania w sprincie. Liczony od momentu utworzenia i przypisania karty do sprintu (pojawienia się w _TO DO_), do momentu jej całkowitego ukończenia (_DONE_).
+
+*Cel monitorowania:* Daje obraz tego, jak szybko zespół potrafi dostarczyć zaplanowaną wartość od momentu podjęcia zobowiązania (rozpoczęcia sprintu).
+
+== Przepływ pracy (Throughput)
+
+Liczbę ukończonych zadań (kart w statusie DONE) oraz zrealizowanych Story Points w zadanym przedziale czasu (np. na tydzień pracy w dwutygodniowym sprincie).
+
+*Cel monitorowania:* Weryfikacja, czy rzeczywiste tempo pracy pokrywa się z naszą estymowaną średnią prędkością zespołu (Velocity) wynoszącą 40 Story Points na sprint.
+
+== Liczba kart/zgłoszeń na osobę (WIP per Assignee)
+
+Aktywną liczbę zadań (szczególnie w kolumnach roboczych) przypisanych do każdego z 3 członków zespołu w danej chwili
+
+*Cel monitorowania:* Zapewnienie zrównoważonego podziału obowiązków.
