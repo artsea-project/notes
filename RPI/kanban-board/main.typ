@@ -88,16 +88,22 @@ Domyślny zestaw stanów został rozszerzony, aby odzwierciedlał zdefiniowaną 
     [Zadanie spełnia wszystkie kryteria akceptacji oraz Definicję Ukończenia],
   ),
 )
+
+== Diagram przejść między stanami
+
+Poniższy zrzut ekranu z narzędzia Jira przedstawia diagram przejść między zdefiniowanymi stanami (workflow). Główny przepływ odbywa się liniowo od "TO DO" do "DONE", z możliwością cofnięcia zadania do poprawy z fazy "CODE REVIEW" lub "TESTY" oraz tymczasowego przeniesienia do stanu "BLOCKED".
+
 #figure(
   image("kanban-board-jira.png"),
-  caption: [Zrzut ekranu z tablic Kanban w Jira]
+  caption: [Diagram przejść między stanami wygenerowany z narzędzia Jira],
 )
+
 = Limity WIP (Work in Progress)
 
 #formatted_table(
-  caption: [Stany zadań na tablicy Kanban],
+  caption: [Limity WIP dla poszczególnych kolumn],
   columnsCount: 3,
-  ref: "tab:requirements",
+  ref: "tab:wip_limits",
   // format: (auto, auto, auto),
   (
     [Stan],
@@ -105,23 +111,23 @@ Domyślny zestaw stanów został rozszerzony, aby odzwierciedlał zdefiniowaną 
     [Uzasadnienie],
     [DO ZROBIENIA (TO DO)],
     [Limit wynikający z pojemności sprintu],
-    [Zgodnie z ustaleniami z poprzedniego etapu, średnia prędkość naszego zespołu została oszacowana na około 40 Story Points dla dwutygodniowej iteracji. Limit w tej kolumnie jest wyrażony w prostej liczbie zadań, lecz w maksymalnej sumie punktów złożoności. Aby plan był realistyczny i dostosowany do naszych możliwości (z uwzględnieniem 20% rezerwy czasowej), łączna waga zadań wybranych do realizacji w sprincie nie może przekroczyć 40 Story Points.],
+    [Zgodnie z ustaleniami z poprzedniego etapu, średnia prędkość naszego zespołu została oszacowana na około 40 Story Points dla dwutygodniowej iteracji. Limit w tej kolumnie nie jest wyrażony w prostej liczbie zadań, lecz w maksymalnej sumie punktów złożoności. Aby plan był realistyczny i dostosowany do naszych możliwości (z uwzględnieniem 20% rezerwy czasowej), łączna waga zadań wybranych do realizacji w sprincie nie może przekroczyć 40 Story Points.],
     formatted_table_sep,
     [W TOKU (IN PROGRESS)],
     [3],
-    [Zespół deweloperski liczy dokładnie 3 osoby. Limit 3 wymusza zasadę, według której każdy członek zespołu pracuje w danej chwili wyłącznie nad jednym zadaniem. Pozwala to na pełne skupienie, unikanie wielozadaniowości (context switching) i szybsze dostarczanie wartości.],
+    [Zespół deweloperski liczy dokładnie 3 osoby. Limit 3 wymusza zasadę, według której każdy członek zespołu pracuje w danej chwili wyłącznie nad jednym zadaniem. Pozwala to na pełne skupienie i unikanie wielozadaniowości (context switching).],
     formatted_table_sep,
     [ZABLOKOWANE (BLOCKED)],
-    [2],
-    [Stan zablokowania jest sytuacją wyjątkową. Jeśli więcej niż 2 zadania trafią do tej kolumny, oznacza to poważny problem z przepływem pracy (np. problemy ze środowiskiem, brak decyzji biznesowych). Limit ten wymusza na zespole natychmiastowe przerwanie innych prac i skupienie się na odblokowaniu zadań.],
+    [4],
+    [Służy do wizualizacji zewnętrznych zależności. Limit 4 zapewnia transparentność, a jego osiągnięcie wymusza priorytetyzację odblokowania prac przed podejmowaniem nowych zadań.],
     formatted_table_sep,
     [CODE REVIEW (IN REVIEW)],
     [2],
-    [Każde zadanie wymaga akceptacji (Pull Requesta) przez przynajmniej jednego innego członka zespołu , na co przewidziano rezerwę czasową. Limit 2 zapobiega tworzeniu się "wąskiego gardła". Wymusza to na zespole bieżące weryfikowanie kodu innych członków, zanim wezmą z kolumny TO DO kolejne zadania dla siebie.],
+    [Każde zadanie wymaga akceptacji (Pull Requesta) przez przynajmniej jednego innego członka zespołu, na co przewidziano rezerwę czasową. Limit 2 zapobiega tworzeniu się "wąskiego gardła". Wymusza to na zespole bieżące weryfikowanie kodu innych członków, zanim wezmą z kolumny TO DO kolejne zadania dla siebie.],
     formatted_table_sep,
     [TESTY (IN TESTING)],
     [2],
-    [Za proces QA i testowanie odpowiada głównie jedna osoba. Zbyt wysoki limit w tej kolumnie mógłby doprowadzić do jej przeciążenia i zablokowania procesu dostarczania gotowego oprogramowania. Limit 2 pozwala na płynną i dokładną weryfikację funkcjonalności.],
+    [Służy do walidacji funkcjonalnej kodu zatwierdzonego w fazie CODE REVIEW. Limit 2 zapewnia płynność weryfikacji przyrostu przed finalnym uznaniem zadania za DONE i zapobiega nadmiernemu nagromadzeniu zadań w końcowej fazie cyklu, podobnie jak w CODE REVIEW.],
     formatted_table_sep,
     [GOTOWE (DONE):],
     [Brak limitu],
@@ -133,22 +139,16 @@ Domyślny zestaw stanów został rozszerzony, aby odzwierciedlał zdefiniowaną 
 
 #figure(
   image("sprint1-kanban-jira.png"),
-  caption: [Zrzut ekranu z tablicy sprintu w Jira]
+  caption: [Aktualny stan tablicy Kanban],
 )
 
 = Metryki produktywności
 
-== Czas cyklu (Cycle Time)
-
-Czas poświęcony na realizację zadania. Liczony od momentu przesunięcia karty z kolumny _TO DO_ do _IN PROGRESS_, aż do momentu osiągnięcia statusu _DONE_.
-
-*Cel monitorowania:* Pozwala ocenić rzeczywistą efektywność dewelopmentu i sprawdzić, czy złożoność zadań (wyrażona w Story Points) przekłada się na przewidywalny czas ich wykonania.
-
 == Czas realizacji (Lead Time)
 
-Całkowity czas życia zadania w sprincie. Liczony od momentu utworzenia i przypisania karty do sprintu (pojawienia się w _TO DO_), do momentu jej całkowitego ukończenia (_DONE_).
+Metryka mierzona jako całkowity czas przebywania zadania w cyklu sprincie, od momentu przypisania do kolumny _TO DO_ do osiągnięcia statusu _DONE_.
 
-*Cel monitorowania:* Daje obraz tego, jak szybko zespół potrafi dostarczyć zaplanowaną wartość od momentu podjęcia zobowiązania (rozpoczęcia sprintu).
+*Cel monitorowania:* Pozwala na obiektywną ocenę szybkości dostarczania wartości (Time-to-Value). Analiza tego wskaźnika pomaga identyfikować wąskie gardła i minimalizować czas oczekiwania zadań w kolejkach, co bezpośrednio przekłada się na lepszą przewidywalność zespołu.
 
 == Przepływ pracy (Throughput)
 
