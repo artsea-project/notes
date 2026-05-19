@@ -100,3 +100,100 @@ erDiagram
   - A user can have one profile, multiple categories, and multiple art pieces.
   - An art piece belongs to one category and can have multiple media files and tags.
   - A tag can be associated with multiple art pieces through the ART_PIECE_TAGS join table.
+
+### Typescript
+```typescript
+export interface RichTextContent {
+    content: Record<string, unknown>; // Rich text data from editor
+}
+
+export interface User {
+    user_id: string;
+    email: string;
+    password_hash: string;
+    created_at: Date;
+}
+
+export interface Profile {
+    profile_id: string;
+    user_id: string; // FK to User
+    full_name: string;
+    bio_PLN: RichTextContent;
+    bio_ENG: RichTextContent;
+    profile_image_url: string;
+}
+
+export interface Links {
+    link_id: string;
+    profile_id: string; // FK to Profile
+    name: string;
+    url: string;
+}
+
+export interface Category {
+    category_id: string;
+    user_id: string; // FK to User
+    name_PLN: string;
+    name_ENG: string;
+}
+
+export interface ArtPiece {
+    art_piece_id: string;
+    user_id: string; // FK to User
+    category_id: string; // FK to Category
+    is_featured: boolean;
+    title_PLN: string;
+    title_ENG: string;
+    dimensions: string;
+    mini_description_PLN: RichTextContent;
+    mini_description_ENG: RichTextContent;
+    description_PLN: RichTextContent;
+    description_ENG: RichTextContent;
+    uploaded_at: Date;
+    grid_width: number; // 1-5 (bento box width in columns)
+    grid_height: number; // 1-5 (bento box height in rows)
+}
+
+export interface Media {
+    media_id: string;
+    art_piece_id: string; // FK to ArtPiece
+    file_url: string;
+    file_type: "png" | "jpg" | "gif" | "mp4" | "pdf";
+    order_index: number;
+}
+
+export interface Tag {
+    tag_id: string;
+    user_id: string; // FK to User
+    name_PLN: string;
+    name_ENG: string;
+}
+
+export interface ArtPieceTags {
+    art_piece_id: string; // PK, FK to ArtPiece
+    tag_id: string; // PK, FK to Tag
+}
+
+export interface SiteSettings {
+    site_settings_id: string;
+    user_id: string; // FK to User
+    theme: ThemeConfig;
+    layout_bento_box: BentoBoxLayout;
+    layout_category_view: CategoryViewLayout;
+}
+
+export interface ThemeConfig {
+    colors: Record<string, string>;
+    fonts: Record<string, string>;
+    spacing: Record<string, string>;
+}
+
+export interface BentoBoxLayout {
+    columns: number; // e.g., 5 columns total grid
+    rows: number; // e.g., 5 rows total grid
+}
+
+export interface CategoryViewLayout {
+    columns: number; // e.g., 3 columns (fixed), rows auto-calculate
+}
+```
