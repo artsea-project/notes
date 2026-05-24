@@ -2,6 +2,7 @@
 
 - [ArtSea-Kansei.pdf](./ArtSea-Kansei.pdf)
 - [RPI-kanban-board.pdf](./RPI-kanban-board.pdf)
+- [RPI-method-and-adaptation.pdf](./RPI-method-and-adaptation.pdf)
 - [RPI-product-backlog.pdf](./RPI-product-backlog.pdf)
 - [RPI-project-organization-and-infrastructure.pdf](./RPI-project-organization-and-infrastructure.pdf)
 - [RPI-retrospective.pdf](./RPI-retrospective.pdf)
