@@ -42,9 +42,9 @@
 - *Rynek:*
   - Artyści niezależni, studenci uczelni artystycznych oraz małe galerie sztuki.
 
-  = Ocena według modelu uproszczonego
+= Ocena według modelu uproszczonego
 
-  Model uproszczony Boehma i Turnera porównuje projekt na pięciu osiach: rozmiar, krytyczność, dynamika, osoby i kultura. Im bardziej projekt jest mały, niekrytyczny, zmienny i oparty na współpracy doświadczonego zespołu, tym silniej wskazuje na metodyki zwinne. Im większy, bardziej krytyczny, stabilny i proceduralny, tym bardziej pasuje do metodyk zdyscyplinowanych.
+  Model uproszczony Boehma i Turnera porównuje projekt na pięciu osiach: rozmiar, krytyczność, dynamika, osoby i kultura. Im projekt jest mniejszy, mniej krytyczny, bardziej zmienny i oparty na współpracy doświadczonego zespołu, tym silniej wskazuje na zastosowanie metodyk zwinnych. Im większy, bardziej krytyczny, stabilny i proceduralny, tym bardziej pasuje do metodyk zdyscyplinowanych.
 
   *Ocena projektu ArtSea według pięciu kryteriów modelu uproszczonego:*
 
@@ -80,7 +80,7 @@ Wniosek z modelu uproszczonego jest jednoznaczny: ArtSea bardziej pasuje do meto
 
 == Zastosowanie
 
-=== Glowne cele
+=== Główne cele
 Celem projektu jest zbudowanie użytecznego MVP platformy portfolio, które pozwoli artystom szybko opublikować spójną stronę i sprawdzić wartość rozwiązania dla grupy docelowej. Istotne są szybkość dostarczenia wartości, prostota użycia, estetyka i możliwość reagowania na informację zwrotną od użytkowników. Tak sformułowany cel jest bliższy metodykom zwinnym niż klasycznym.
 
 Elementy wskazujące na zwinność:
@@ -90,12 +90,13 @@ Elementy wskazujące na zwinność:
 
 Elementem częściowo niepasującym do czystej zwinności są wymagania jakościowe i bezpieczeństwa. Haszowanie haseł, HTTPS, ochrona bazy danych, wydajność obrazów i RODO nie mogą być odkładane wyłącznie na późniejszą refaktoryzację, ponieważ wpływają na architekturę i wiarygodność produktu.
 
-=== Srodowisko
+=== Środowisko
 Środowisko projektu jest umiarkowanie zmienne. Rynek narzędzi portfolio i kreatorów stron jest konkurencyjny, a oczekiwania użytkowników dotyczące estetyki, szybkości i obsługi mobilnej mogą zmieniać się po kontakcie z prototypem. Jednocześnie podstawowy problem biznesowy jest stabilny: nietechniczny artysta potrzebuje prostego narzędzia do stworzenia portfolio.
 
 Ocena środowiska wskazuje na metodykę zwinną z planowanymi punktami stabilizacji. Zwinność jest potrzebna w zakresie UX, układu strony, priorytetów MVP i sposobu prezentacji prac. Bardziej planowe podejście jest potrzebne w zakresie architektury danych, autoryzacji, storage'u plików i wymagań jakościowych.
 
-== Zarzadzanie
+#pagebreak()
+== Zarządzanie
 
 === Komunikacja
 Zespół jest mały i pracuje hybrydowo. Spotkania statusowe odbywają się dwa razy w tygodniu na Discordzie, spotkania z interesariuszami co dwa tygodnie, komunikację mailową z opiekunem, dokumentowanie ważnych decyzji w repozytorium #notes oraz zarządzanie zadaniami w Jira. To środowisko dobrze pasuje do metodyk zwinnych, ponieważ umożliwia częstą komunikację i szybkie uzgadnianie priorytetów.
@@ -121,10 +122,11 @@ Podejście czysto klasyczne z pełnym Big Design Up Front byłoby zbyt ciężkie
 == Osoby
 
 === Klient
-Głównym klientem w projekcie jest promotorka, która pełni rolę osoby oceniającej kierunek produktu, makiety, zakres funkcjonalny oraz zgodność projektu z celem pracy inżynierskiej. Nie jest to jednak klient w pełni odpowiadający idealnemu Product Ownerowi klasy CRACK, ponieważ nie reprezentuje bezpośrednio wszystkich końcowych użytkowników systemu. Z tego powodu decyzje produktowe uzupełniamy kryteriami akceptacji oraz testami wykonywanymi przez zespół.
+Głównym klientem w projekcie jest Pani promotor, która pełni rolę osoby oceniającej kierunek produktu, makiety, zakres funkcjonalny oraz zgodność projektu z celem pracy inżynierskiej. Nie jest to jednak klient w pełni odpowiadający idealnemu Product Ownerowi klasy CRACK (Collaborative, Responsible, Authorized, Committed, Knowledgeable), ponieważ nie reprezentuje bezpośrednio wszystkich końcowych użytkowników systemu. Z tego powodu decyzje produktowe uzupełniamy kryteriami akceptacji oraz testami wykonywanymi przez zespół.
 
 Takie ułożenie współpracy częściowo pasuje do Scruma, ponieważ mamy osobę, która regularnie ocenia efekty i może zatwierdzać kierunek prac. Jednocześnie jest to obszar wymagający adaptacji, ponieważ brak stałego przedstawiciela realnych artystów może powodować, że część decyzji UX będzie oparta na założeniach zespołu. Aby ograniczyć to ryzyko, metodykę należy rozszerzyć o walidację najważniejszych funkcji z użytkownikami testowymi oraz o konkretne kryteria akceptacji dla elementów interfejsu.
 
+#pagebreak()
 === Kultura
 Kultura pracy zespołu jest bliższa zwinności, ponieważ zespół pracuje sprintami, przeprowadza retrospektywy, korzysta z tablicy zadań i reaguje na problemy procesu. Jednocześnie zespół świadomie wprowadza elementy porządku: Code Review, Definition of Done, manualne testy i dokumentację w repozytorium.
 
@@ -183,7 +185,7 @@ Sugerowana metodyka wynikająca z modelu dostarczania to *Scrum* jako metodyka b
 
 = Metodyka i jej adaptacja
 
-== Wybor metodyki bazowej
+== Wybór metodyki bazowej
 
 Na podstawie modelu uproszczonego, modelu pełnego i modelu dostarczania zalecaną metodyką bazową dla projektu ArtSea jest *Scrum*. Uzasadnienie wyboru:
 - projekt jest realizowany przez mały zespół
@@ -246,7 +248,7 @@ Należy utrzymać następujące elementy metodyki:
 - retrospektywy po każdym sprincie,
 - regularną inspekcję przyrostu.
 
-== Elementy przyciete lub uproszczone
+== Elementy przycięte lub uproszczone
 
 Ze względu na trzyosobowy zespół nie ma potrzeby pełnej formalizacji ról i ceremonii w skali dużej organizacji. Scrum Master może być rolą rotacyjną lub przypisaną osobie moderującej spotkania, a Product Owner powinien być rolą pośredniczącą, wspieraną walidacją zewnętrzną. Daily Scrum w klasycznej codziennej formie można zastąpić krótkimi statusami dwa razy w tygodniu oraz obowiązkiem aktualizacji Jiry, o ile nie spada przejrzystość sprintu. Jeżeli w sprincie pojawiają się blokery lub intensywna integracja kodu, należy czasowo wrócić do częstszych krótkich synchronizacji.
 
@@ -259,6 +261,6 @@ Do Scruma należy dodać:
 - formalne kryteria akceptacji dla wymagań jakościowych,
 - dokumentowanie ważnych decyzji w #notes.
 
-== Wniosek koncowy
+== Wniosek końcowy
 
 ArtSea powinno być prowadzone jako projekt zwinny, oparty na Scrumie, ale nie jako projekt pozbawiony dyscypliny. Najważniejsze cechy projektu -- mały zespół, zmienny UX, możliwość przyrostowego dostarczania i potrzeba szybkiej walidacji wartości -- wskazują na Scrum. Najważniejsze odstępstwa -- brak stałego Product Ownera CRACK, wymagania jakościowe, bezpieczeństwo, praca hybrydowa i mieszane kompetencje -- wymagają adaptacji metodyki przez dodanie praktyk dokumentacyjnych, jakościowych i przepływowych. Taka adaptacja nie niszczy fundamentów Scruma, ponieważ nadal zachowuje empiryzm, przejrzystość, inspekcję, adaptację i dostarczanie przyrostów, a jednocześnie kompensuje realne ryzyka projektu ArtSea.
