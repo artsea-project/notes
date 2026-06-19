@@ -4,196 +4,408 @@
 ```mermaid
 erDiagram
     USER {
-        string user_id PK
-        string email
+        uuid user_id PK
+        string username UNIQUE
+        string email UNIQUE
         string password_hash
-        datetime created_at
+        timestamp email_verified_at
+        timestamp created_at
     }
 
     PROFILE {
-        string profile_id PK
-        string user_id FK
+        uuid profile_id PK
+        uuid user_id FK, UNIQUE
         string full_name
-        jsonb bio_PLN
-        jsonb bio_ENG
+        jsonb bio_pln
+        jsonb bio_eng
         string profile_image_url
     }
 
+    EMAIL_VERIFICATION_TOKEN {
+        string token PK
+        uuid user_id FK
+        timestamp expires_at
+    }
+
     LINKS {
-        string link_id PK
-        string profile_id FK
+        uuid link_id PK
+        uuid profile_id FK
         string name
         string url
     }
     
     CATEGORY {
-        string category_id PK
-        string user_id FK
-        string name_PLN
-        string name_ENG 
+        uuid category_id PK
+        uuid user_id FK
+        string name_pln
+        string name_eng
     }
 
     ART_PIECE {
-        string art_piece_id PK
-        string user_id FK
-        string category_id FK
-        bit is_featured
-        string title_PLN
-        string title_ENG
+        uuid art_piece_id PK
+        uuid user_id FK
+        uuid category_id FK
+        boolean is_featured
+        boolean is_visible
+        string title_pln
+        string title_eng
         string dimensions
-        jsonb mini_description_PLN
-        jsonb mini_description_ENG
-        jsonb description_PLN
-        jsonb description_ENG
-        datetime uploaded_at
+        int year_of_execution
+        jsonb mini_description_pln
+        jsonb mini_description_eng
+        jsonb description_pln
+        jsonb description_eng
+        timestamp uploaded_at
     }
 
     MEDIA {
-        string media_id PK
-        string art_piece_id FK
+        uuid media_id PK
+        uuid art_piece_id FK
         string file_url
-        string file_type "png | jpg | gif | mp4 | pdf"
-        int order_index 
+        string file_type
+        int order_index
     }
 
     TAG {
-        string tag_id PK
-        string user_id FK
-        string name_PLN
-        string name_ENG
+        uuid tag_id PK
+        uuid user_id FK
+        string name_pln
+        string name_eng
     }
 
     ART_PIECE_TAGS {
-        string art_piece_id PK, FK
-        string tag_id PK, FK
+        uuid art_piece_id PK, FK
+        uuid tag_id PK, FK
     }
 
     SITE_SETTINGS {
-        string site_settings_id PK
-        string user_id FK
-        jsonb theme "colors, fonts, spacing"
-        jsonb layout_bento_box "grid configuration"
-        jsonb layout_category_view "Pinterest-like grid configuration"
+        uuid site_settings_id PK
+        uuid user_id FK, UNIQUE
+        jsonb theme
+        jsonb layout_bento_box
+        jsonb layout_category_view
     }
 
-    USER ||--o| PROFILE : "owns"
+    USER ||--|| PROFILE : "owns"
+    USER ||--o{ EMAIL_VERIFICATION_TOKEN : "receives"
     USER ||--o{ CATEGORY : "creates"
     USER ||--o{ ART_PIECE : "uploads"
-    ART_PIECE }o--|{ CATEGORY : "belongs to"
+    ART_PIECE }o--|| CATEGORY : "belongs_to"
     ART_PIECE ||--o{ MEDIA : "has"
-    ART_PIECE ||--o{ ART_PIECE_TAGS : "tagged with"
-    TAG ||--|{ ART_PIECE_TAGS : "tags"
-    USER ||--o| SITE_SETTINGS : "configures"
-    PROFILE ||--o{ LINKS : "has"
+    ART_PIECE ||--o{ ART_PIECE_TAGS : "tagged_with"
+    TAG ||--o{ ART_PIECE_TAGS : "associated_with"
+    USER ||--|| SITE_SETTINGS : "configures"
+    PROFILE ||--o{ LINKS : "contains"
 ```
 
 ### Table Descriptions
-- **USER**: Stores user account information including email and password hash.
-- **PROFILE**: Contains user profile details such as full name, bio, profile image, and social media links.
-- **CATEGORY**: Represents categories created by users to organize their art pieces.
-- **ART_PIECE**: Stores information about individual art pieces uploaded by users.
-- **MEDIA**: Contains media files associated with art pieces, including images and videos.
-- **TAG**: Represents tags created by users to categorize their art pieces.
-- **ART_PIECE_TAGS**: A join table to associate art pieces with multiple tags.
-- **SITE_SETTINGS**: Stores user-specific site settings such as theme and layout configurations.
+- **USER**: Stores user account credentials and authentication metadata (including email, username, password hash, and verification status).
+- **PROFILE**: Contains user profile details (full name, multi-language bios, and avatar URL) linked 1:1 with the USER.
+- **EMAIL_VERIFICATION_TOKEN**: Stores session-restricted tokens for email validation, expiring after 60 minutes.
+- **LINKS**: Stores external social profiles (Instagram, Facebook) or links mapped under the profile.
+- **CATEGORY**: Mapped categories used by artists to group their works. Category names are unique per artist.
+- **ART_PIECE**: Stores descriptive metadata for art pieces, supporting Polish and English versions and viewport visibility flags.
+- **MEDIA**: Associates media URLs (images, mp4 loop assets) with art pieces.
+- **TAG**: User-defined tag entities for taxonomy.
+- **ART_PIECE_TAGS**: Join table mapping art pieces to tag relations.
+- **SITE_SETTINGS**: Stores customized themes (JSON) and Bento Box coordinate definitions.
 - **Relationships**:
-  - A user can have one profile, multiple categories, and multiple art pieces.
-  - An art piece belongs to one category and can have multiple media files and tags.
-  - A tag can be associated with multiple art pieces through the ART_PIECE_TAGS join table.
+  - A user has exactly one profile and one set of site settings (1:1).
+  - A user can receive verification tokens, create categories, and upload art pieces.
+  - An art piece belongs to a single category (restricted deletion rules apply) and features multiple media files/tags.
+  - Social links are owned by the profile, and tags are mapped via join tables.
 
-### Typescript
+### Drizzle ORM Schema
+
 ```typescript
-export interface RichTextContent {
-    content: Record<string, unknown>; // Rich text data from editor
-}
+import { pgTable, text, jsonb, boolean, integer, timestamp, uuid, primaryKey, foreignKey, unique } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 
-export interface User {
-    user_id: string;
-    email: string;
-    password_hash: string;
-    created_at: Date;
-}
+// User Table
+// ALT: userId: serial('user_id').primaryKey().generatedAlwaysAsIdentity()
+export const users = pgTable('user', {
+    userId: uuid('user_id').primaryKey().defaultRandom(),
+    username: text('username').notNull().unique(),
+    email: text('email').notNull().unique(),
+    passwordHash: text('password_hash').notNull(),
+    emailVerified: timestamp('email_verified_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
 
-export interface Profile {
-    profile_id: string;
-    user_id: string; // FK to User
-    full_name: string;
-    bio_PLN: RichTextContent;
-    bio_ENG: RichTextContent;
-    profile_image_url: string;
-}
+// Profile Table
+// ALT: profileId: serial('profile_id').primaryKey().generatedAlwaysAsIdentity()
+export const profiles = pgTable(
+    'profile',
+    {
+        profileId: uuid('profile_id').primaryKey().defaultRandom(),
+        userId: uuid('user_id').notNull().unique(),
+        fullName: text('full_name').notNull(),
+        bioPln: jsonb('bio_pln'),
+        bioEng: jsonb('bio_eng'),
+        profileImageUrl: text('profile_image_url'),
+    },
+    (table) => [
+        foreignKey({
+            columns: [table.userId],
+            foreignColumns: [users.userId],
+            name: 'profile_user_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+    ]
+);
 
-export interface Links {
-    link_id: string;
-    profile_id: string; // FK to Profile
-    name: string;
-    url: string;
-}
+// Email Verification Token Table
+export const emailVerificationTokens = pgTable(
+    'email_verification_token',
+    {
+        token: text('token').primaryKey(),
+        userId: uuid('user_id').notNull(),
+        expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    },
+    (table) => [
+        foreignKey({
+            columns: [table.userId],
+            foreignColumns: [users.userId],
+            name: 'email_verification_token_user_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+    ]
+);
 
-export interface Category {
-    category_id: string;
-    user_id: string; // FK to User
-    name_PLN: string;
-    name_ENG: string;
-}
+// Links Table
+// ALT: linkId: serial('link_id').primaryKey().generatedAlwaysAsIdentity()
+export const links = pgTable(
+    'links',
+    {
+        linkId: uuid('link_id').primaryKey().defaultRandom(),
+        profileId: uuid('profile_id').notNull(),
+        name: text('name').notNull(),
+        url: text('url').notNull(),
+    },
+    (table) => [
+        foreignKey({
+            columns: [table.profileId],
+            foreignColumns: [profiles.profileId],
+            name: 'links_profile_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+    ]
+);
 
-export interface ArtPiece {
-    art_piece_id: string;
-    user_id: string; // FK to User
-    category_id: string; // FK to Category
-    is_featured: boolean;
-    title_PLN: string;
-    title_ENG: string;
-    dimensions: string;
-    mini_description_PLN: RichTextContent;
-    mini_description_ENG: RichTextContent;
-    description_PLN: RichTextContent;
-    description_ENG: RichTextContent;
-    uploaded_at: Date;
-    grid_width: number; // 1-5 (bento box width in columns)
-    grid_height: number; // 1-5 (bento box height in rows)
-}
+// Category Table
+// ALT: categoryId: serial('category_id').primaryKey().generatedAlwaysAsIdentity()
+export const categories = pgTable(
+    'category',
+    {
+        categoryId: uuid('category_id').primaryKey().defaultRandom(),
+        userId: uuid('user_id').notNull(),
+        namePln: text('name_pln').notNull(),
+        nameEng: text('name_eng').notNull(),
+    },
+    (table) => [
+        foreignKey({
+            columns: [table.userId],
+            foreignColumns: [users.userId],
+            name: 'category_user_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+        unique('category_user_name_pln_uq').on(table.userId, table.namePln),
+        unique('category_user_name_eng_uq').on(table.userId, table.nameEng),
+    ]
+);
 
-export interface Media {
-    media_id: string;
-    art_piece_id: string; // FK to ArtPiece
-    file_url: string;
-    file_type: "png" | "jpg" | "gif" | "mp4" | "pdf";
-    order_index: number;
-}
+// Tag Table
+// ALT: tagId: serial('tag_id').primaryKey().generatedAlwaysAsIdentity()
+export const tags = pgTable(
+    'tag',
+    {
+        tagId: uuid('tag_id').primaryKey().defaultRandom(),
+        userId: uuid('user_id').notNull(),
+        namePln: text('name_pln'),
+        nameEng: text('name_eng'),
+    },
+    (table) => [
+        foreignKey({
+            columns: [table.userId],
+            foreignColumns: [users.userId],
+            name: 'tag_user_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+    ]
+);
 
-export interface Tag {
-    tag_id: string;
-    user_id: string; // FK to User
-    name_PLN: string;
-    name_ENG: string;
-}
+// Art Piece Table
+// ALT: artPieceId: serial('art_piece_id').primaryKey().generatedAlwaysAsIdentity()
+export const artPieces = pgTable(
+    'art_piece',
+    {
+        artPieceId: uuid('art_piece_id').primaryKey().defaultRandom(),
+        userId: uuid('user_id').notNull(),
+        categoryId: uuid('category_id').notNull(),
+        isFeatured: boolean('is_featured').notNull().default(false),
+        isVisible: boolean('is_visible').notNull().default(true),
+        titlePln: text('title_pln'),
+        titleEng: text('title_eng'),
+        dimensions: text('dimensions'),
+        yearOfExecution: integer('year_of_execution'),
+        miniDescriptionPln: jsonb('mini_description_pln'),
+        miniDescriptionEng: jsonb('mini_description_eng'),
+        descriptionPln: jsonb('description_pln'),
+        descriptionEng: jsonb('description_eng'),
+        uploadedAt: timestamp('uploaded_at', { withTimezone: true }).notNull().defaultNow(),
+        gridWidth: integer('grid_width').default(1),
+        gridHeight: integer('grid_height').default(1),
+    },
+    (table) => [
+        foreignKey({
+            columns: [table.userId],
+            foreignColumns: [users.userId],
+            name: 'art_piece_user_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+        foreignKey({
+            columns: [table.categoryId],
+            foreignColumns: [categories.categoryId],
+            name: 'art_piece_category_fk',
+        }).onDelete('restrict').onUpdate('cascade'),
+    ]
+);
 
-export interface ArtPieceTags {
-    art_piece_id: string; // PK, FK to ArtPiece
-    tag_id: string; // PK, FK to Tag
-}
+// Media Table
+// ALT: mediaId: serial('media_id').primaryKey().generatedAlwaysAsIdentity()
+export const media = pgTable(
+    'media',
+    {
+        mediaId: uuid('media_id').primaryKey().defaultRandom(),
+        artPieceId: uuid('art_piece_id').notNull(),
+        fileUrl: text('file_url').notNull(),
+        fileType: text('file_type', { enum: ['png', 'jpg', 'gif', 'mp4'] }).notNull(),
+        orderIndex: integer('order_index').notNull(),
+    },
+    (table) => [
+        foreignKey({
+            columns: [table.artPieceId],
+            foreignColumns: [artPieces.artPieceId],
+            name: 'media_art_piece_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+    ]
+);
 
-export interface SiteSettings {
-    site_settings_id: string;
-    user_id: string; // FK to User
-    theme: ThemeConfig;
-    layout_bento_box: BentoBoxLayout;
-    layout_category_view: CategoryViewLayout;
-}
+// Art Piece Tags (Join Table)
+export const artPieceTags = pgTable(
+    'art_piece_tags',
+    {
+        artPieceId: uuid('art_piece_id').notNull(),
+        tagId: uuid('tag_id').notNull(),
+    },
+    (table) => [
+        primaryKey({
+            columns: [table.artPieceId, table.tagId],
+            name: 'art_piece_tags_pk',
+        }),
+        foreignKey({
+            columns: [table.artPieceId],
+            foreignColumns: [artPieces.artPieceId],
+            name: 'art_piece_tags_art_piece_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+        foreignKey({
+            columns: [table.tagId],
+            foreignColumns: [tags.tagId],
+            name: 'art_piece_tags_tag_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+    ]
+);
 
-export interface ThemeConfig {
-    colors: Record<string, string>;
-    fonts: Record<string, string>;
-    spacing: Record<string, string>;
-}
+// Site Settings Table
+// ALT: siteSettingsId: serial('site_settings_id').primaryKey().generatedAlwaysAsIdentity()
+export const siteSettings = pgTable(
+    'site_settings',
+    {
+        siteSettingsId: uuid('site_settings_id').primaryKey().defaultRandom(),
+        userId: uuid('user_id').notNull().unique(),
+        theme: jsonb('theme'),
+        layoutBentoBox: jsonb('layout_bento_box'),
+        layoutCategoryView: jsonb('layout_category_view'),
+    },
+    (table) => [
+        foreignKey({
+            columns: [table.userId],
+            foreignColumns: [users.userId],
+            name: 'site_settings_user_fk',
+        }).onDelete('cascade').onUpdate('cascade'),
+    ]
+);
 
-export interface BentoBoxLayout {
-    columns: number; // e.g., 5 columns total grid
-    rows: number; // e.g., 5 rows total grid
-}
+// Relations
+export const usersRelations = relations(users, ({ one, many }) => ({
+    profile: one(profiles),
+    categories: many(categories),
+    artPieces: many(artPieces),
+    tags: many(tags),
+    siteSettings: one(siteSettings),
+}));
 
-export interface CategoryViewLayout {
-    columns: number; // e.g., 3 columns (fixed), rows auto-calculate
-}
+
+export const profilesRelations = relations(profiles, ({ one, many }) => ({
+    user: one(users, {
+        fields: [profiles.userId],
+        references: [users.userId],
+    }),
+    links: many(links),
+}));
+
+export const linksRelations = relations(links, ({ one }) => ({
+    profile: one(profiles, {
+        fields: [links.profileId],
+        references: [profiles.profileId],
+    }),
+}));
+
+export const categoriesRelations = relations(categories, ({ one, many }) => ({
+    user: one(users, {
+        fields: [categories.userId],
+        references: [users.userId],
+    }),
+    artPieces: many(artPieces),
+}));
+
+export const tagsRelations = relations(tags, ({ one, many }) => ({
+    user: one(users, {
+        fields: [tags.userId],
+        references: [users.userId],
+    }),
+    artPieces: many(artPieceTags),
+}));
+
+export const artPiecesRelations = relations(artPieces, ({ one, many }) => ({
+    user: one(users, {
+        fields: [artPieces.userId],
+        references: [users.userId],
+    }),
+    category: one(categories, {
+        fields: [artPieces.categoryId],
+        references: [categories.categoryId],
+    }),
+    media: many(media),
+    tags: many(artPieceTags),
+}));
+
+export const mediaRelations = relations(media, ({ one }) => ({
+    artPiece: one(artPieces, {
+        fields: [media.artPieceId],
+        references: [artPieces.artPieceId],
+    }),
+}));
+
+export const artPieceTagsRelations = relations(artPieceTags, ({ one }) => ({
+    artPiece: one(artPieces, {
+        fields: [artPieceTags.artPieceId],
+        references: [artPieces.artPieceId],
+    }),
+    tag: one(tags, {
+        fields: [artPieceTags.tagId],
+        references: [tags.tagId],
+    }),
+}));
+
+export const siteSettingsRelations = relations(siteSettings, ({ one }) => ({
+    user: one(users, {
+        fields: [siteSettings.userId],
+        references: [users.userId],
+    }),
+}));
 ```
