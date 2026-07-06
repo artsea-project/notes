@@ -51,8 +51,8 @@ erDiagram
         string title_eng
         string dimensions
         int year_of_execution
-        jsonb mini_description_pln
-        jsonb mini_description_eng
+        jsonb mini_description_pln // remove
+        jsonb mini_description_eng // remove
         jsonb description_pln
         jsonb description_eng
         timestamp uploaded_at
