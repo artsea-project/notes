@@ -1,0 +1,10 @@
+- Adding links to media as pop up isntead of new page
+- Discussion about the form for adding new art pieces to the database. 
+  - Missing fileds like dimensions. Decided to abond idea od mini description and use title, year of execution instead.
+  - Form to create color theme 
+    - add more definitions - css variables example form daisy ui
+    - decided to let users specifiy eg 6 and others we will calculate
+    - assign specific colors to specific modules
+  - Use of drag and drop for selecting images to use in art piece 
+  - Change database accordingly
+- Find publications about UI and UX
