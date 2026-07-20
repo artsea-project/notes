@@ -1,183 +1,221 @@
-<!-- add phasqwe 1-->
 ## Summary of Milestones
 
 | Milestone | Core Objective |
 |---|---|
-| **Phase 2: Core CMS** | Deploy the artist's administration dashboard, enabling full creation, retrieval, updating, and deletion (CRUD) of portfolio works, custom categories, and personal bio details. |
-| **Phase 3: Bento Box & Personalization** | Establish the interactive grid customization UI (Bento Box layout), dynamic theme variables, custom typography, public page generation, and social media contact links. |
-| **Phase 4: Optimization, Testing & Release** | Deliver multilingual support (Polish/English), server-side image compression, offline form persistence, cross-browser/RWD validation, and production deployment configuration (containerized environment and hosting instructions for platforms like Vercel and VPS). |
+| **Phase 2: Core CMS & Public Pages** | Deploy the artist's administration dashboard and standard public pages, enabling creation, retrieval, updating, and deletion (CRUD) of portfolio works, custom categories, personal bio details, public gallery, and social media/contact links. |
+| **Phase 3: Bento Box & Personalization** | Establish the interactive grid customization UI (Bento Box layout editor), dynamic category layout settings, theme color/font variables, micro-animations, and visual customization. |
+| **Phase 4: Optimization, Testing & Release** | Deliver multilingual support (Polish/English), server-side image/video compression, offline form persistence, E2E testing suite, RWD validation, and production deployment configuration (Docker & VPS / Vercel). |
 
 
 ---
 
 ## Detailed Technical Tasks (Issues)
 
-### Phase 2: Core CMS
+### Phase 2: Core CMS & Standard Public Application
 
-#### Add Work to Portfolio
-* **Description:** Implement the frontend form and backend API endpoints to upload a new portfolio piece.
+#### 2.1 Public Header & Navigation Bar
+* **Description:** Implement the main responsive site header and navigation bar for public visitors.
 * **Technical Implementation Details:**
-  * **Frontend:** Create an `/admin/portfolio/new` page featuring a multi-part form. Include text inputs for titles (`titlePln`, `titleEng`), descriptions (`descriptionPln`, `descriptionEng`), dimensions (height, width, depth in cm), and year of execution (`yearOfExecution`), along with a dropdown for category selection, a visibility toggle (`isVisible`), and a file dropzone.
-  * **Backend API / Upload Strategy:**
-    - **Images:** Uploaded to Next.js API route `POST /api/portfolio/work`, validated using Zod, compressed (to WebP/AVIF via `sharp`), and streamed to cloud storage.
-    - **Videos (up to 50MB):** Request an S3 pre-signed upload URL from a Next.js endpoint `GET /api/portfolio/upload-url`, and upload the video file directly from the browser client to the S3 bucket to bypass Vercel's 4.5MB serverless function payload limit.
-  * **Database:** Using Drizzle ORM, insert a new record into the `art_piece` (`artPieces`) table containing `userId`, `categoryId`, `titlePln`, `titleEng`, `dimensions`, `descriptionPln`, `descriptionEng`, `isVisible` (boolean, default true), and `yearOfExecution` (integer). Then, insert a related record into the `media` (`media`) table mapping `artPieceId`, `fileUrl`, `fileType` ('png', 'jpg', 'gif', or 'mp4'), and `orderIndex`.
+  * Create header component with artist brand logo, navigation links (`Home`, `Portfolio`, `O Mnie`), language toggle button (`PL`/`EN`), and an Admin Login shortcut link.
 * **Acceptance Criteria:**
-  - [ ] Logged-in artist can access the creation form via an "Add Work" button in the dashboard.
-  - [ ] File dropzone accepts drag-and-drop actions and validates that a file is present.
-  - [ ] Next.js endpoint returns a `201 Created` status with the database payload on success, or a `400 Bad Request` with validation errors on failure.
-  - [ ] UI shows a success/error toast notification and redirects the user back to the list of works.
+  - [ ] Navigation bar is visible across all public pages.
+  - [ ] Navigating between `Home`, `Portfolio`, and `O Mnie` highlights active routes correctly.
 
-#### Edit Work Details
-* **Description:** Implement endpoints and interfaces to modify metadata or replace the media file of an existing portfolio piece.
+#### 2.2 Global Footer Component
+* **Description:** Build the site footer component containing copyright info and social media/contact links.
 * **Technical Implementation Details:**
-  * **Frontend:** Create `/admin/portfolio/edit/[id]` pre-populated with work details retrieved via a server component.
-  * **Backend API:** Route Handler  `PUT/PATCH /api/portfolio/work/[id]`.
-  * **Replacement Logic:** If a new file is uploaded, update the `fileUrl` and `fileType` in the `media` table. Update the metadata (`titlePln`, `titleEng`, `descriptionPln`, `descriptionEng`, `dimensions`) in the `art_piece` table. Delete the obsolete file from the cloud storage prior to saving the new URL.
+  * Query external links (`links` table) and render icons (Instagram, Behance, Email `mailto:`, LinkedIn, etc.). Display copyright notice.
 * **Acceptance Criteria:**
-  - [ ] Clicking the "Edit" button on a work loads its current data into the form inputs.
-  - [ ] Modifying text metadata updates the PostgreSQL row in the `art_piece` table.
-  - [ ] Replacing the image uploads the new media, deletes the old file from the cloud object storage, and updates the `media` table row.
+  - [ ] Footer renders on all public pages.
+  - [ ] Social and contact links dynamically load from the database and open in new tabs / email client via `mailto:`.
 
-#### Delete Work
-* **Description:** Clean up database records and delete associated files in the cloud object storage.
+#### 2.3 Public "O Mnie" (About Me & Contact Links) Page
+* **Description:** Build the public `/about` page displaying artist bio and media/contact links.
 * **Technical Implementation Details:**
-  * **Backend API:** Route Handler `DELETE /api/portfolio/work/[id]`.
-  * **Cascading/Cleanup:** Fetch the associated media record first to retrieve the cloud storage reference. Delete the file from the cloud  storage, then execute the Drizzle `delete` statement on the `art_piece` table. The foreign key constraint `.onDelete('cascade')` automatically deletes the associated row in the `media` table.
+  * Fetch profile data (`profile` table) and render profile picture (`profileImageUrl`), dual-language biograms (`bioPln`, `bioEng`), and social/contact media links (Instagram, Behance, Email, etc.). *(Note: No contact form; contact is via direct email/media links).*
 * **Acceptance Criteria:**
-  - [ ] Clicking the "Delete" button displays a modal asking: *"Are you sure you want to permanently delete this work? This action cannot be undone."*
-  - [ ] Confirming the deletion fires a request to `DELETE /api/portfolio/work/[id]`.
-  - [ ] The row is removed from PostgreSQL and the file is deleted from the cloud object storage.
+  - [ ] Visiting `/about` loads the artist's photo, dual-language bio text, and interactive media/contact links.
 
-#### Add, Edit, and Delete Categories
-* **Description:** Create management views and APIs to organize works by custom categories.
+#### 2.4 Standard Public Gallery / Portfolio (`/portfolio`) Page
+* **Description:** Implement the baseline public gallery page with category filter tabs.
 * **Technical Implementation Details:**
-  * **Database Schema:** Use the `category` (`categories`) table which contains `categoryId`, `userId`, `namePln`, and `nameEng`.
-  * **Frontend:** Embed a category administration sub-view in the dashboard allowing CRUD operations on categories, supporting text inputs for both Polish (`namePln`) and English (`nameEng`) category names.
-  * **Validation & Integrity:** Ensure that duplicate names are blocked. Handle referential integrity when categories with active works are deleted (the database schema uses `.onDelete('restrict')` on the `categoryId` foreign key, blocking deletion if works exist; the application must ensure works are reassigned or deleted prior to category removal).
+  * Fetch all published works (`isVisible: true`) and display in a standard responsive grid layout. Add category filtering controls at the top. *(Note: Advanced Bento Grid canvas customization is deferred to Phase 3).*
 * **Acceptance Criteria:**
-  - [ ] Form validates that the category name is non-empty and unique for the logged-in user.
-  - [ ] Art pieces can be assigned to newly created categories dynamically.
-  - [ ] Deleting an active category blocks deletion or prompts the user to reassign works to another category (or a default "Uncategorized" state).
+  - [ ] Visiting `/portfolio` displays all visible works.
+  - [ ] Clicking a category tab filters works by selected category.
 
-
-#### Multiple Media Format Support (mp4, gif, png, jpg)
-* **Description:** Enable support for animations and short video loops in the portfolio, alongside static images.
+#### 2.5 Work Detail (`/work/[id]`) Page & Modal
+* **Description:** Create artwork details view with media gallery and metadata display.
 * **Technical Implementation Details:**
-  * **Validation:** Restrict allowed file uploads in frontend dropzone and backend API to `image/png`, `image/jpeg`, `image/gif`, `pdf` and `video/mp4`.
-  * **Renderer Component:** Create a unified media renderer component that inspects the `fileType` column ('png', 'jpg', 'gif', 'mp4') in the `media` table and renders a auto play tag for `mp4` and standard `<img>` tags for images/GIFs.
+  * Render media carousel (PNG, JPG, GIF, MP4), title, year of execution, dimensions, category, and full description. Setup Parallel/Intercepting route `@modal/(.)work/[id]` for in-page popups when opened from `/portfolio`.
 * **Acceptance Criteria:**
-  - [ ] Artist can upload `.gif` and `.mp4` files via the dashboard upload form.
-  - [ ] Form rejects executable files or unsupported formats.
-  - [ ] The dashboard and portfolio pages display `.mp4` items as autoplaying, looping, muted videos.
+  - [ ] Clicking an artwork in the gallery opens the detail pop-up overlay.
+  - [ ] Direct URL `/work/[id]` loads as a full standalone page.
 
-#### Manage "About me" Section
-* **Description:** Implement an author bio editor in the admin panel with support for rich text.
+#### 2.6 Setup Auth & Admin Protection Middleware
+* **Description:** Configure BetterAuth credentials/Google login and route protection.
 * **Technical Implementation Details:**
-  * **Rich Text Integration:** Install and configure a editor bound to a HTML/JSON schema field
-  * **Database:** Store the bio contents and avatar URL in the `profile` (`profiles`) table, mapping fields to `fullName`, `bioPln` (JSON representation for Polish), `bioEng` (JSON representation for English), and `profileImageUrl`.
+  * Setup `/login` and `/register` pages. Add Next.js middleware restricting `/admin/*` routes to authenticated sessions only.
 * **Acceptance Criteria:**
-  - [ ] Artist can type, bold, italicize, and structure bulleted lists within the bio fields (PL/EN).
-  - [ ] Profile information updates correctly in PostgreSQL and renders as HTML in the public view.
+  - [ ] Unauthenticated requests to `/admin/*` redirect to `/login`.
+  - [ ] Logged-in admin is redirected to `/admin` when attempting to visit `/login`.
+
+#### 2.7 Admin Shell & Navigation Sidebar
+* **Description:** Build the admin dashboard main shell and responsive navigation menu.
+* **Technical Implementation Details:**
+  * Sidebar layout with menu items (`Przegląd`, `Prace`, `Kategorie`, `Profil`), header user badge, and Logout button.
+* **Acceptance Criteria:**
+  - [ ] Sidebar allows seamless navigation across all admin CMS modules.
+
+#### 2.8 Admin Dashboard Overview (`/admin`) Page
+* **Description:** Create the main dashboard overview page.
+* **Technical Implementation Details:**
+  * Display summary metrics (total works, visible works count, category count) and quick action shortcuts.
+* **Acceptance Criteria:**
+  - [ ] Dashboard displays accurate DB count statistics upon login.
+
+#### 2.9 Add Work to Portfolio
+* **Description:** Implement frontend form and backend API endpoints to upload a new portfolio piece.
+* **Technical Implementation Details:**
+  * **Frontend:** Create `/admin/works/new` form with inputs for titles (`titlePln`, `titleEng`), descriptions (`descriptionPln`, `descriptionEng`), dimensions, year of execution, category dropdown, visibility toggle (`isVisible`), featured toggle (`isFeatured`), and file dropzone.
+  * **Backend & DB:** Insert record into `art_piece` table and associated rows into `media` table.
+* **Acceptance Criteria:**
+  - [ ] Logged-in artist can upload new works with image/video files.
+  - [ ] Endpoint returns `201 Created` and redirects back to `/admin/works`.
+
+#### 2.10 Edit & Delete Work Details
+* **Description:** Implement metadata editing, media replacement, and deletion modal with cleanup.
+* **Technical Implementation Details:**
+  * `/admin/works/[id]/edit` pre-populated with work data.
+  * Confirmation modal for deletion firing `DELETE /api/works/[id]` with cloud media cleanup.
+* **Acceptance Criteria:**
+  - [ ] Editing updates DB records in `art_piece` and `media`.
+  - [ ] Deleting removes database rows and deletes files from object storage.
+
+#### 2.11 Category CRUD Management (PU9, PU10)
+* **Description:** Manage dual-language categories (`namePln`, `nameEng`).
+* **Technical Implementation Details:**
+  * Dedicated `/admin/categories` page for adding/editing categories. Block deleting categories containing active works without prior reassignment.
+* **Acceptance Criteria:**
+  - [ ] Categories can be created, updated, and assigned to works.
+  - [ ] Deleting an active category blocks deletion or requires reassigning works.
+
+#### 2.12 Manage Profile & Bio Section (PU11)
+* **Description:** Implement author bio editor in the admin panel with rich text support.
+* **Technical Implementation Details:**
+  * Profile form on `/admin/profile` storing `fullName`, `bioPln`, `bioEng`, and `profileImageUrl` in the `profile` table.
+* **Acceptance Criteria:**
+  - [ ] Artist can edit Polish/English bio text and upload profile picture.
+
+#### 2.13 Social & Contact Media Links Manager
+* **Description:** Manage external social profile and contact media links (`links` table).
+* **Technical Implementation Details:**
+  * Sub-view on `/admin/profile` to add, edit, or delete external links (Instagram, Behance, Email `mailto:`, etc.).
+* **Acceptance Criteria:**
+  - [ ] Links update correctly and reflect instantly on the public website footer and "O Mnie" page.
 
 ---
 
 ### Phase 3: Bento Box & Personalization
 
-
-#### Interactive Bento Box Editor
-* **Description:** Build the interactive canvas in the admin dashboard where the artist constructs their Bento Box grid layouts. Based on the Figma design, the artist manually configures two distinct layouts: one for Web (Desktop) and one for Mobile viewports.
+#### 3.1 Public Bento Grid Component (`BentoGrid` & `BentoCard`)
+* **Description:** Build the public grid component that reads stored Bento layout coordinates and renders responsive cards.
 * **Technical Implementation Details:**
-  * **Grid Engine:** Create a grid layout with resize/drag event listeners supporting responsive column states.
-  * **Data Representation:** Represent layout positions as JSON coordinates structured for both viewports: `{ desktop: [{ id: string, x: number, y: number, w: number, h: number }], mobile: [{ id: string, x: number, y: number, w: number, h: number }] }`.
-  * **Dual Bento Configuration:** Ensure both desktop and mobile are configured as customized Bento grids. The editor provides separate canvases or canvas modes for Web (e.g., 4-6 columns) and Mobile (e.g., 1-2 columns) so the artist can customize the layout structure for both devices.
-  * **Database Integration:** Saving the layout writes this dual-viewport JSON structure to the `layoutBentoBox` (`layout_bento_box`) JSONB column in the `site_settings` table.
+  * Read `siteSettings.layoutBentoBox` JSON (desktop/mobile arrays). Render dynamic grid cells using Tailwind CSS grid column/row spans based on coordinates (`x`, `y`, `w`, `h`).
 * **Acceptance Criteria:**
-  - [ ] Admin personalization canvas displays works and bio sections as draggable, resizable grid blocks.
-  - [ ] Canvas toggles allow the artist to configure the Web (Desktop) layout and the Mobile layout independently.
-  - [ ] Saving the configuration writes both desktop and mobile layout coordinate arrays to the `layoutBentoBox` JSONB column in the `site_settings` table.
+  - [ ] `/portfolio` displays artworks matching the stored Bento grid layout positions.
+  - [ ] Grid seamlessly switches between Desktop layout (4-6 cols) and Mobile layout (1-2 cols) based on viewport breakpoint.
 
-#### Theme Customization (Colors & Fonts)
-* **Description:** Let the artist choose fonts and colors to reflect their personal brand.
+#### 3.2 Interactive Bento Box Canvas Editor (`/admin/layout`) (PU12)
+* **Description:** Build the drag-and-drop personalization canvas in the admin dashboard.
 * **Technical Implementation Details:**
-  * **Tailwind Variables:** Map background, foreground, primary, border, and font family utilities to CSS variables in `globals.css`.
-  * **Theme Configuration:** Save the chosen styling variables or preset ID in the `theme` JSONB column in the `site_settings` table.
+  * Interactive canvas powered by grid drag-and-drop library (e.g. `@dnd-kit` or `react-grid-layout`). Toggles for **Desktop Canvas** and **Mobile Canvas**.
+  * "Save Layout" action sends `PUT /api/site-settings` updating `layoutBentoBox` column in `site_settings` table.
 * **Acceptance Criteria:**
-  - [ ] Configuration page provides options for at least 5 preset color palettes and 3 font pairings.
-  - [ ] Selecting a theme updates the admin preview instantly.
-  - [ ] Public site loads and applies the user's selected styles on page load.
+  - [ ] Admin can drag, resize, and reorder artwork cards on both Desktop and Mobile canvases.
+  - [ ] Clicking save persists updated coordinate arrays to PostgreSQL.
 
-#### Public Portfolio Gallery View
-* **Description:** Implement the  responsive portfolio page.
+#### 3.3 Category View Layout Customizer (`layoutCategoryView`)
+* **Description:** Allow the artist to customize default grid settings when visitors filter by a specific category.
 * **Technical Implementation Details:**
-  * **Server Rendering:** Fetch user profile, layout coordinates, and works.
-  * **Masonry/Bento Layout:** Render a responsive HTML grid matching the stored coordinates in `layoutBentoBox` (rendering the `desktop` coordinate array on desktop viewports and the `mobile` coordinate array on mobile viewports).
+  * Option to set target column count (2, 3, or 4 columns), aspect ratio constraint, and card gap size. Saves to `layoutCategoryView` JSONB column in `site_settings`.
 * **Acceptance Criteria:**
-  - [ ] Visiting `/u/[username]` renders the public portfolio page matching the Bento layout coordinates.
-  - [ ] Both desktop and mobile viewports load their respective custom-designed Bento layouts correctly..
+  - [ ] Custom category grid settings apply when filtering works by category on `/portfolio`.
 
-
-#### Social Media Links Integration
-* **Description:** Associate external social account links with the artist's profile to display on the portfolio page.
+#### 3.4 Dynamic Theme & Color Palette Customizer
+* **Description:** Allow the artist to configure theme colors (background, card background, primary text, accent color).
 * **Technical Implementation Details:**
-  * **Database Schema:** Store links as separate rows in the `links` table referencing the `profileId`. Each row contains a `name` (e.g., 'instagram', 'facebook', 'email') and `url`.
-  * **Frontend Integration:** Query all links associated with the profile ID. Render corresponding icons dynamically.
+  * Inject CSS custom properties (`:root { --bg-color: ...; --accent-color: ...; }`) dynamically on page load based on `siteSettings.theme`. Provide 5 preset color palettes + custom color inputs in `/admin/layout`.
 * **Acceptance Criteria:**
-  - [ ] Admin profile page contains input fields for Instagram, Facebook, and contact email.
-  - [ ] Public page displays SVGs linked to the configured networks.
-  - [ ] E-mail link utilizes the `mailto:` protocol.
+  - [ ] Color changes in admin theme customizer immediately reflect across the public site.
 
+#### 3.5 Typography & Font Pairings Customizer
+* **Description:** Allow the artist to select typography font pairings for headings and body text.
+* **Technical Implementation Details:**
+  * Load selected Google Fonts dynamically via `next/font` (e.g., Inter, Playfair Display, Space Grotesk, Outfit) based on `siteSettings.theme.fontFamily`.
+* **Acceptance Criteria:**
+  - [ ] Selected font pairing applies cleanly to headings and body text across the portfolio.
+
+#### 3.6 Micro-animations & Visual Polish
+* **Description:** Enhance user experience with smooth transitions and subtle micro-animations.
+* **Technical Implementation Details:**
+  * Add Framer Motion / Tailwind animations for artwork hover states (subtle image scale), category filter transitions, and modal pop-up backdrop fade-ins.
+* **Acceptance Criteria:**
+  - [ ] Hovering over gallery cards smoothly scales images without layout shift.
+  - [ ] Category tab filtering and modal popups animate smoothly.
 
 ---
 
-### Phase 4: Optimization, i18n & Release
+### Phase 4: Optimization, i18n, Testing & Release
 
-#### Multilingual Support (PL/EN)
-* **Description:** Add an automated mechanism to detect the browser's local language and a switcher button to manually toggle the language.
+#### 4.1 Multilingual (i18n) Engine & Locale Switcher (PU3)
+* **Description:** Implement dynamic language toggling (PL/EN) with localized routes and translation fallbacks.
 * **Technical Implementation Details:**
-  * **Locale Detection & Routing:** Parse Accept-Language headers, client language, or path parameters to determine the user's preferred language.
-  * **Static UI Routing:** Resolve static system text (such as labels, navigation menus, and buttons) from translation files based on the active route locale.
-  * **No Content Translation:** Ensure database schemas and API endpoints remain simple. The application does not translate the artist's custom content (titles, descriptions, bio); it renders the fields exactly as uploaded in the database (`Pln` or `Eng` suffix columns).
+  * Setup locale prefixing (`/pl/...` and `/en/...`) or middleware locale detection. Static system texts (nav, buttons, labels) resolved from `locales/pl.json` and `locales/en.json`.
+  * Fallback logic: If custom artist content (title, description, bio) lacks an English translation, render Polish content without throwing errors.
 * **Acceptance Criteria:**
-  - [ ] A language switcher button or toggle is visible in both the admin panel and the public pages.
-  - [ ] On first load, the application correctly detects the visitor's browser language (PL or EN) and redirects to the appropriate localized subpath.
-  - [ ] Toggling the language switcher transitions the URL subpath (e.g. from `/pl/...` to `/en/...`), updating all static labels, buttons, and system messages immediately.
+  - [ ] Toggling language switcher immediately updates UI labels and route locale.
+  - [ ] Missing translations fallback gracefully to Polish.
 
-
-
-#### Image and Video Upload Optimization
-* **Description:** Optimize media files during upload to minimize bandwidth usage and achieve First Contentful Paint (FCP) under 2 seconds.
+#### 4.2 Media Compression & Pipeline Optimization
+* **Description:** Optimize image and video loading for sub-2-second First Contentful Paint (FCP).
 * **Technical Implementation Details:**
-  <!-- za glupia na to jestem, nie wiem jak -->
+  * Server-side image conversion to WebP/AVIF via `sharp` in Next.js upload API route. Generate low-resolution blur placeholders (`blurDataURL`) for Next.js `<Image>` components.
+  * Optimize MP4 video loops (muted, autoplay, inline play, compressed bitrate).
 * **Acceptance Criteria:**
-  - [ ] First Contentful Paint on mobile connections (throttled 3G/4G) is under 2 seconds.
+  - [ ] Uploaded images are compressed to WebP/AVIF with reduced file sizes.
+  - [ ] FCP loads under 2 seconds on 4G connection.
 
-#### Offline Form Data Persistence
-* **Description:** Prevent data loss when editing bios or adding new works if the network disconnects.
+#### 4.3 Offline Form Draft Persistence
+* **Description:** Prevent loss of un-submitted form data during network drops or accidental tab closes.
 * **Technical Implementation Details:**
-  * **Local State Synchronization:** Implement a hook that saves inputs to `localStorage` periodically (autosave).
-  * **Network Status Listener:** Hook up event listeners to flag connection changes in the UI.
-  * **Draft Retrieval:** On component mount, check for existing drafts in `localStorage` and display a restore prompt if found.
+  * React hook saving form field state to `localStorage` on input change. Add network status listener (`online`/`offline` events) displaying a warning banner if connection drops. Restore draft prompt on mount.
 * **Acceptance Criteria:**
-  - [ ] Losing internet connection during form input displays an offline status indicator.
-  - [ ] Accidental page reloads or loss of power does not discard form data; values are loaded from `localStorage` upon page restore.
-  - [ ] Successfully submitting the form deletes the local backup.
+  - [ ] Disconnecting internet while writing a bio or work description displays an offline status indicator.
+  - [ ] Reloading the page restores draft data from `localStorage`.
+  - [ ] Successful submission clears the local draft.
 
-#### Responsive Web Design & Cross-browser Compatibility
-* **Description:** Test layout compatibility and responsiveness on mobile/desktop viewports and popular browser engines.
-* **Acceptance Criteria:**
-  - [ ] Admin panels and portfolios adapt cleanly to viewports ranging from 320px up to 1920px without layout breakage or horizontal scrollbars.
-  - [ ] All interactive flows operate normally on Safari (macOS/iOS), Google Chrome, Mozilla Firefox, and Microsoft Edge.
-
-#### Deployment Configuration (Self-Hosting & Cloud Platforms)
-* **Description:** Package the Next.js application inside a Docker container for self-hosting setups, and provide clear step-by-step instructions for hosting on private servers (e.g., VPS) using a containerized architecture where a PostgreSQL database container runs alongside the app, as well as instructions for deploying the frontend to cloud platforms (e.g., Vercel).
+#### 4.4 Automated E2E & Component Testing Suite
+* **Description:** Establish automated test suite with Playwright, React Testing Library, and MSW.
 * **Technical Implementation Details:**
-  * **Dockerization:** Create a production multi-stage `Dockerfile` and a `docker-compose.yml` that configures a multi-container stack. This stack must include the Next.js application container and a PostgreSQL database container.L.
-  * **Database Integration:** Configure the webapp container to communicate with the PostgreSQL database container via the internal Docker bridge network, using the Postgres service container name as the hostname.
-  * **Vercel Hosting Path:** Author a detailed guide explaining how to deploy the Next.js frontend to Vercel.
+  * **Playwright E2E:** Test admin login -> create work -> view in public portfolio -> edit work -> delete work.
+  * **RTL & MSW:** Unit test Bento Grid coordinate renderer, category filter, and API route handlers.
 * **Acceptance Criteria:**
-  - [ ] Multi-stage production build compiles successfully and runs inside a Docker Compose setup containing both the Next.js app and the PostgreSQL database service.
-  - [ ] Database data persists across container restarts using mapped Docker volumes for the PostgreSQL container.
-  - [ ] The repository includes a `deployment.md` guide 
+  - [ ] Playwright E2E suite passes all key user journeys.
+  - [ ] Unit tests pass with clean test coverage.
 
+#### 4.5 Responsive Web Design (RWD) & Cross-Browser Validation
+* **Description:** Audit layout responsiveness and cross-browser functionality.
+* **Technical Implementation Details:**
+  * Validate viewports from 320px (mobile) up to 1920px+ (desktop). Test on Chrome, Firefox, Safari (macOS & iOS), and Edge.
+* **Acceptance Criteria:**
+  - [ ] App renders without horizontal scrollbars or broken layouts on all target devices.
 
+#### 4.6 Containerized Deployment (Docker & VPS / Vercel)
+* **Description:** Package app in multi-stage Docker setup and author deployment documentation.
+* **Technical Implementation Details:**
+  * Create multi-stage `Dockerfile` and `docker-compose.yml` linking Next.js app container with PostgreSQL database container (with mapped data volume). Include Vercel cloud deployment guide in `deployment.md`.
+* **Acceptance Criteria:**
+  - [ ] `docker compose up` builds and runs both webapp and database seamlessly.
+  - [ ] Database data persists across container restarts.
+  - [ ] `deployment.md` documentation is ready in repository.
