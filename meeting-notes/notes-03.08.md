@@ -1,0 +1,1 @@
+the database was initially designed to support multiple users. However, since we opted for a containerized, self-hosted deployment architecture (where each artist runs their own isolated instance of the application), the schema has been simplified to support a single user. As a result, all userId foreign keys and relations have been removed from non-user tables.
