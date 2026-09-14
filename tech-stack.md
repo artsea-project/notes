@@ -19,7 +19,7 @@ later.
 
 ## Data Storage
 
-We chose SupaBase as our data storage solution as it let's us easily
+We chose PostgreSQL as our data storage solution as it let's us easily
 store files as well as structured data like login information.
 It also allows us to choose between local and serverless hosting.
 
@@ -29,18 +29,14 @@ It also helps us with migrations.
 
 ## Authentication
 
-BetterAuth
+Chose BetterAuth so that we do not implement the Authentication ourselves,
+as this would risk vulnerabilities in a small project.
 <https://github.com/better-auth/better-auth>
-Free, works with SupaBase and drizzle, allows for Google Auth which is the
-preferred option.
+Free, works with PostgreSQL and drizzle.
+Simple setup with password only login.
+
+
 
 ## Testing
 
-Look at jest with next and RTS.
-Jest: <https://nextjs.org/docs/app/guides/testing/jest>
-RTS: <https://testing-library.com/docs/react-testing-library/intro/>
-
-Playwright for in browser testing
-
-Look at MSW for mocking APIs
-<https://mswjs.io/docs/>
+Playwright for everything
