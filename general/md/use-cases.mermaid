@@ -1,0 +1,12 @@
+flowchart LR
+    Odbiorca((Odbiorca))
+
+    subgraph ArtSea [Interfejs portfolio]
+        PU1([Przeglądanie galerii zdjęć])
+        PU2([Kontakt z artystą])
+        PU3([Wybór języka interfejsu])
+    end
+
+    Odbiorca --- PU1
+    Odbiorca --- PU2
+    Odbiorca --- PU3
